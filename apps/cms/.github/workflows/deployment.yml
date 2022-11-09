@@ -1,0 +1,73 @@
+name: Deploy Payload to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build artifacts
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'yarn'
+
+      - name: Install
+        run: yarn
+
+      - name: Cache build
+        id: cache-payload-build
+        uses: actions/cache@v3
+        with:
+          path: output
+          key: ${{ runner.os }}-payload-build-cache-${{ hashFiles('src/**/*') }}
+
+      - name: Build
+        run: yarn build
+        if: steps.cache-payload-build.outputs.cache-hit != 'true'
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: payload-output
+          path: output
+
+  deploy:
+    name: Deploy to AWS
+    needs: build
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@master
+        with:
+          name: payload-output
+          path: output
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          name: payload.cer
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          if_key_exists: replace
+          config: |
+            Host ${{ secrets.SSH_HOST }}
+              AddKeysToAgent yes
+              IdentityFile ~/.ssh/payload.cer
+
+      - name: Deploy
+        run: |
+          chmod +x ./_deploy.sh
+          sh ./_deploy.sh
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}

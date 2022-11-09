@@ -1,0 +1,39 @@
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "output/**",
+        "dist/**",
+        ".next/**",
+        ".expo/**"
+      ],
+      "inputs": [
+        "src",
+        "pages",
+        "package.json",
+        "tsconfig.json",
+        "next.config.js"
+      ]
+    },
+    "test": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "prettier": {
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    },
+    "clean": {},
+    "postinstall": {}
+  }
+}

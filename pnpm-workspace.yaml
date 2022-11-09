@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/api
+  - packages/db
+  - packages/eslint-config-heir-base
+  - packages/eslint-config-heir-react
+  - packages/heir-tailwind-preset
+  - packages/prettier-config
+  - packages/tsconfig
+  - packages/ui

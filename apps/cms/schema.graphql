@@ -1,0 +1,6816 @@
+type Query {
+  User(id: String, draft: Boolean): User
+  Users(
+    where: User_where
+    draft: Boolean
+    page: Int
+    limit: Int
+    sort: String
+  ): Users
+  meUser: usersMe
+  initializedUser: Boolean
+  Service(id: String, draft: Boolean): Service
+  Services(
+    where: Service_where
+    draft: Boolean
+    page: Int
+    limit: Int
+    sort: String
+  ): Services
+  meService: servicesMe
+  initializedService: Boolean
+  Media(id: String, draft: Boolean): Media
+  allMedia(
+    where: Media_where
+    draft: Boolean
+    page: Int
+    limit: Int
+    sort: String
+  ): allMedia
+  Reward(id: String, draft: Boolean): Reward
+  Rewards(
+    where: Reward_where
+    draft: Boolean
+    page: Int
+    limit: Int
+    sort: String
+  ): Rewards
+  versionReward(id: String): RewardVersion
+  versionsRewards(
+    where: versionsReward_where
+    page: Int
+    limit: Int
+    sort: String
+  ): versionsRewards
+  Poll(id: String, draft: Boolean): Poll
+  Polls(
+    where: Poll_where
+    draft: Boolean
+    page: Int
+    limit: Int
+    sort: String
+  ): Polls
+  versionPoll(id: String): PollVersion
+  versionsPolls(
+    where: versionsPoll_where
+    page: Int
+    limit: Int
+    sort: String
+  ): versionsPolls
+  Preference(key: String): Preference
+  Access: Access
+}
+
+type User {
+  id: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: EmailAddress
+  resetPasswordToken: String
+  resetPasswordExpiration: DateTime
+  loginAttempts: Float
+  lockUntil: DateTime
+  role: User_role!
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""
+A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+"""
+scalar EmailAddress @specifiedBy(url: "https://www.w3.org/Protocols/rfc822/")
+
+enum User_role {
+  admin
+  developer
+  editor
+  viewer
+}
+
+type Users {
+  docs: [User]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input User_where {
+  email: User_email_operator
+  role: User_role_operator
+  id: User_id_operator
+  createdAt: User_createdAt_operator
+  updatedAt: User_updatedAt_operator
+  OR: [User_where_or]
+  AND: [User_where_and]
+}
+
+input User_email_operator {
+  equals: EmailAddress
+  not_equals: EmailAddress
+  like: EmailAddress
+  contains: EmailAddress
+  exists: Boolean
+}
+
+input User_role_operator {
+  equals: User_role_Input
+  not_equals: User_role_Input
+  in: [User_role_Input]
+  not_in: [User_role_Input]
+  all: [User_role_Input]
+}
+
+enum User_role_Input {
+  admin
+  developer
+  editor
+  viewer
+}
+
+input User_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+  @specifiedBy(
+    url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
+  )
+
+input User_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input User_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input User_where_or {
+  email: User_email_operator
+  role: User_role_operator
+  id: User_id_operator
+  createdAt: User_createdAt_operator
+  updatedAt: User_updatedAt_operator
+}
+
+input User_where_and {
+  email: User_email_operator
+  role: User_role_operator
+  id: User_id_operator
+  createdAt: User_createdAt_operator
+  updatedAt: User_updatedAt_operator
+}
+
+type usersMe {
+  token: String
+  user: User
+  exp: Int
+  collection: String
+}
+
+type Service {
+  id: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  enableAPIKey: Boolean
+  apiKey: String
+  apiKeyIndex: String
+  email: EmailAddress
+  resetPasswordToken: String
+  resetPasswordExpiration: DateTime
+  loginAttempts: Float
+  lockUntil: DateTime
+  name: String!
+  password: String!
+}
+
+type Services {
+  docs: [Service]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input Service_where {
+  enableAPIKey: Service_enableAPIKey_operator
+  apiKey: Service_apiKey_operator
+  email: Service_email_operator
+  name: Service_name_operator
+  id: Service_id_operator
+  createdAt: Service_createdAt_operator
+  updatedAt: Service_updatedAt_operator
+  OR: [Service_where_or]
+  AND: [Service_where_and]
+}
+
+input Service_enableAPIKey_operator {
+  equals: Boolean
+  not_equals: Boolean
+  exists: Boolean
+}
+
+input Service_apiKey_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Service_email_operator {
+  equals: EmailAddress
+  not_equals: EmailAddress
+  like: EmailAddress
+  contains: EmailAddress
+  exists: Boolean
+}
+
+input Service_name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Service_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Service_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Service_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Service_where_or {
+  enableAPIKey: Service_enableAPIKey_operator
+  apiKey: Service_apiKey_operator
+  email: Service_email_operator
+  name: Service_name_operator
+  id: Service_id_operator
+  createdAt: Service_createdAt_operator
+  updatedAt: Service_updatedAt_operator
+}
+
+input Service_where_and {
+  enableAPIKey: Service_enableAPIKey_operator
+  apiKey: Service_apiKey_operator
+  email: Service_email_operator
+  name: Service_name_operator
+  id: Service_id_operator
+  createdAt: Service_createdAt_operator
+  updatedAt: Service_updatedAt_operator
+}
+
+type servicesMe {
+  token: String
+  user: Service
+  exp: Int
+  collection: String
+}
+
+type Media {
+  id: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String
+  filename: String
+  mimeType: String
+  filesize: Float
+  width: Float
+  height: Float
+  sizes: Media_Sizes
+  alt: String
+}
+
+type Media_Sizes {
+  thumbnail: Media_Sizes_thumbnail
+  card: Media_Sizes_card
+  tablet: Media_Sizes_tablet
+}
+
+type Media_Sizes_thumbnail {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+type Media_Sizes_card {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+type Media_Sizes_tablet {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+type allMedia {
+  docs: [Media]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input Media_where {
+  url: Media_url_operator
+  filename: Media_filename_operator
+  mimeType: Media_mimeType_operator
+  filesize: Media_filesize_operator
+  width: Media_width_operator
+  height: Media_height_operator
+  sizes__thumbnail__url: Media_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Media_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Media_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Media_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Media_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Media_sizes__thumbnail__filename_operator
+  sizes__card__url: Media_sizes__card__url_operator
+  sizes__card__width: Media_sizes__card__width_operator
+  sizes__card__height: Media_sizes__card__height_operator
+  sizes__card__mimeType: Media_sizes__card__mimeType_operator
+  sizes__card__filesize: Media_sizes__card__filesize_operator
+  sizes__card__filename: Media_sizes__card__filename_operator
+  sizes__tablet__url: Media_sizes__tablet__url_operator
+  sizes__tablet__width: Media_sizes__tablet__width_operator
+  sizes__tablet__height: Media_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Media_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Media_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Media_sizes__tablet__filename_operator
+  alt: Media_alt_operator
+  id: Media_id_operator
+  createdAt: Media_createdAt_operator
+  updatedAt: Media_updatedAt_operator
+  OR: [Media_where_or]
+  AND: [Media_where_and]
+}
+
+input Media_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Media_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Media_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Media_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Media_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Media_where_or {
+  url: Media_url_operator
+  filename: Media_filename_operator
+  mimeType: Media_mimeType_operator
+  filesize: Media_filesize_operator
+  width: Media_width_operator
+  height: Media_height_operator
+  sizes__thumbnail__url: Media_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Media_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Media_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Media_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Media_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Media_sizes__thumbnail__filename_operator
+  sizes__card__url: Media_sizes__card__url_operator
+  sizes__card__width: Media_sizes__card__width_operator
+  sizes__card__height: Media_sizes__card__height_operator
+  sizes__card__mimeType: Media_sizes__card__mimeType_operator
+  sizes__card__filesize: Media_sizes__card__filesize_operator
+  sizes__card__filename: Media_sizes__card__filename_operator
+  sizes__tablet__url: Media_sizes__tablet__url_operator
+  sizes__tablet__width: Media_sizes__tablet__width_operator
+  sizes__tablet__height: Media_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Media_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Media_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Media_sizes__tablet__filename_operator
+  alt: Media_alt_operator
+  id: Media_id_operator
+  createdAt: Media_createdAt_operator
+  updatedAt: Media_updatedAt_operator
+}
+
+input Media_where_and {
+  url: Media_url_operator
+  filename: Media_filename_operator
+  mimeType: Media_mimeType_operator
+  filesize: Media_filesize_operator
+  width: Media_width_operator
+  height: Media_height_operator
+  sizes__thumbnail__url: Media_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Media_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Media_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Media_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Media_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Media_sizes__thumbnail__filename_operator
+  sizes__card__url: Media_sizes__card__url_operator
+  sizes__card__width: Media_sizes__card__width_operator
+  sizes__card__height: Media_sizes__card__height_operator
+  sizes__card__mimeType: Media_sizes__card__mimeType_operator
+  sizes__card__filesize: Media_sizes__card__filesize_operator
+  sizes__card__filename: Media_sizes__card__filename_operator
+  sizes__tablet__url: Media_sizes__tablet__url_operator
+  sizes__tablet__width: Media_sizes__tablet__width_operator
+  sizes__tablet__height: Media_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Media_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Media_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Media_sizes__tablet__filename_operator
+  alt: Media_alt_operator
+  id: Media_id_operator
+  createdAt: Media_createdAt_operator
+  updatedAt: Media_updatedAt_operator
+}
+
+type Reward {
+  id: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  _status: Reward__status
+  name: String!
+  image(where: Reward_Image_where): Media
+  huddleId: Reward_huddleId!
+  code: String!
+  dateComingSoon: DateTime!
+  dateSelecting: DateTime!
+  dateAwarded: DateTime!
+  claimBy: DateTime!
+  legacyYear: Float
+  awardedTo: String
+}
+
+enum Reward__status {
+  draft
+  published
+}
+
+input Reward_Image_where {
+  url: Reward_Image_url_operator
+  filename: Reward_Image_filename_operator
+  mimeType: Reward_Image_mimeType_operator
+  filesize: Reward_Image_filesize_operator
+  width: Reward_Image_width_operator
+  height: Reward_Image_height_operator
+  sizes__thumbnail__url: Reward_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Reward_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Reward_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Reward_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Reward_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Reward_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Reward_Image_sizes__card__url_operator
+  sizes__card__width: Reward_Image_sizes__card__width_operator
+  sizes__card__height: Reward_Image_sizes__card__height_operator
+  sizes__card__mimeType: Reward_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Reward_Image_sizes__card__filesize_operator
+  sizes__card__filename: Reward_Image_sizes__card__filename_operator
+  sizes__tablet__url: Reward_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Reward_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Reward_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Reward_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Reward_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Reward_Image_sizes__tablet__filename_operator
+  alt: Reward_Image_alt_operator
+  id: Reward_Image_id_operator
+  OR: [Reward_Image_where_or]
+  AND: [Reward_Image_where_and]
+}
+
+input Reward_Image_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_Image_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_Image_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Reward_Image_where_or {
+  url: Reward_Image_url_operator
+  filename: Reward_Image_filename_operator
+  mimeType: Reward_Image_mimeType_operator
+  filesize: Reward_Image_filesize_operator
+  width: Reward_Image_width_operator
+  height: Reward_Image_height_operator
+  sizes__thumbnail__url: Reward_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Reward_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Reward_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Reward_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Reward_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Reward_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Reward_Image_sizes__card__url_operator
+  sizes__card__width: Reward_Image_sizes__card__width_operator
+  sizes__card__height: Reward_Image_sizes__card__height_operator
+  sizes__card__mimeType: Reward_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Reward_Image_sizes__card__filesize_operator
+  sizes__card__filename: Reward_Image_sizes__card__filename_operator
+  sizes__tablet__url: Reward_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Reward_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Reward_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Reward_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Reward_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Reward_Image_sizes__tablet__filename_operator
+  alt: Reward_Image_alt_operator
+  id: Reward_Image_id_operator
+}
+
+input Reward_Image_where_and {
+  url: Reward_Image_url_operator
+  filename: Reward_Image_filename_operator
+  mimeType: Reward_Image_mimeType_operator
+  filesize: Reward_Image_filesize_operator
+  width: Reward_Image_width_operator
+  height: Reward_Image_height_operator
+  sizes__thumbnail__url: Reward_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Reward_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Reward_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Reward_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Reward_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Reward_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Reward_Image_sizes__card__url_operator
+  sizes__card__width: Reward_Image_sizes__card__width_operator
+  sizes__card__height: Reward_Image_sizes__card__height_operator
+  sizes__card__mimeType: Reward_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Reward_Image_sizes__card__filesize_operator
+  sizes__card__filename: Reward_Image_sizes__card__filename_operator
+  sizes__tablet__url: Reward_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Reward_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Reward_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Reward_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Reward_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Reward_Image_sizes__tablet__filename_operator
+  alt: Reward_Image_alt_operator
+  id: Reward_Image_id_operator
+}
+
+enum Reward_huddleId {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+type Rewards {
+  docs: [Reward]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input Reward_where {
+  _status: Reward__status_operator
+  name: Reward_name_operator
+  image: Reward_image_operator
+  huddleId: Reward_huddleId_operator
+  code: Reward_code_operator
+  dateComingSoon: Reward_dateComingSoon_operator
+  dateSelecting: Reward_dateSelecting_operator
+  dateAwarded: Reward_dateAwarded_operator
+  claimBy: Reward_claimBy_operator
+  legacyYear: Reward_legacyYear_operator
+  awardedTo: Reward_awardedTo_operator
+  id: Reward_id_operator
+  createdAt: Reward_createdAt_operator
+  updatedAt: Reward_updatedAt_operator
+  OR: [Reward_where_or]
+  AND: [Reward_where_and]
+}
+
+input Reward__status_operator {
+  equals: Reward__status_Input
+  not_equals: Reward__status_Input
+  in: [Reward__status_Input]
+  not_in: [Reward__status_Input]
+  all: [Reward__status_Input]
+  exists: Boolean
+}
+
+enum Reward__status_Input {
+  draft
+  published
+}
+
+input Reward_name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Reward_image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input Reward_huddleId_operator {
+  equals: Reward_huddleId_Input
+  not_equals: Reward_huddleId_Input
+  in: [Reward_huddleId_Input]
+  not_in: [Reward_huddleId_Input]
+  all: [Reward_huddleId_Input]
+}
+
+enum Reward_huddleId_Input {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input Reward_code_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Reward_dateComingSoon_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input Reward_dateSelecting_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input Reward_dateAwarded_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input Reward_claimBy_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input Reward_legacyYear_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Reward_awardedTo_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Reward_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Reward_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Reward_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Reward_where_or {
+  _status: Reward__status_operator
+  name: Reward_name_operator
+  image: Reward_image_operator
+  huddleId: Reward_huddleId_operator
+  code: Reward_code_operator
+  dateComingSoon: Reward_dateComingSoon_operator
+  dateSelecting: Reward_dateSelecting_operator
+  dateAwarded: Reward_dateAwarded_operator
+  claimBy: Reward_claimBy_operator
+  legacyYear: Reward_legacyYear_operator
+  awardedTo: Reward_awardedTo_operator
+  id: Reward_id_operator
+  createdAt: Reward_createdAt_operator
+  updatedAt: Reward_updatedAt_operator
+}
+
+input Reward_where_and {
+  _status: Reward__status_operator
+  name: Reward_name_operator
+  image: Reward_image_operator
+  huddleId: Reward_huddleId_operator
+  code: Reward_code_operator
+  dateComingSoon: Reward_dateComingSoon_operator
+  dateSelecting: Reward_dateSelecting_operator
+  dateAwarded: Reward_dateAwarded_operator
+  claimBy: Reward_claimBy_operator
+  legacyYear: Reward_legacyYear_operator
+  awardedTo: Reward_awardedTo_operator
+  id: Reward_id_operator
+  createdAt: Reward_createdAt_operator
+  updatedAt: Reward_updatedAt_operator
+}
+
+type RewardVersion {
+  parent(where: RewardVersion_undefined_where): Reward
+  version: RewardVersion_undefined
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input RewardVersion_undefined_where {
+  _status: RewardVersion_undefined__status_operator
+  name: RewardVersion_undefined_name_operator
+  image: RewardVersion_undefined_image_operator
+  huddleId: RewardVersion_undefined_huddleId_operator
+  code: RewardVersion_undefined_code_operator
+  dateComingSoon: RewardVersion_undefined_dateComingSoon_operator
+  dateSelecting: RewardVersion_undefined_dateSelecting_operator
+  dateAwarded: RewardVersion_undefined_dateAwarded_operator
+  claimBy: RewardVersion_undefined_claimBy_operator
+  legacyYear: RewardVersion_undefined_legacyYear_operator
+  awardedTo: RewardVersion_undefined_awardedTo_operator
+  id: RewardVersion_undefined_id_operator
+  OR: [RewardVersion_undefined_where_or]
+  AND: [RewardVersion_undefined_where_and]
+}
+
+input RewardVersion_undefined__status_operator {
+  equals: RewardVersion_undefined__status_Input
+  not_equals: RewardVersion_undefined__status_Input
+  in: [RewardVersion_undefined__status_Input]
+  not_in: [RewardVersion_undefined__status_Input]
+  all: [RewardVersion_undefined__status_Input]
+  exists: Boolean
+}
+
+enum RewardVersion_undefined__status_Input {
+  draft
+  published
+}
+
+input RewardVersion_undefined_name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input RewardVersion_undefined_image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_huddleId_operator {
+  equals: RewardVersion_undefined_huddleId_Input
+  not_equals: RewardVersion_undefined_huddleId_Input
+  in: [RewardVersion_undefined_huddleId_Input]
+  not_in: [RewardVersion_undefined_huddleId_Input]
+  all: [RewardVersion_undefined_huddleId_Input]
+}
+
+enum RewardVersion_undefined_huddleId_Input {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input RewardVersion_undefined_code_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input RewardVersion_undefined_dateComingSoon_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input RewardVersion_undefined_dateSelecting_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input RewardVersion_undefined_dateAwarded_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input RewardVersion_undefined_claimBy_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input RewardVersion_undefined_legacyYear_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_awardedTo_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input RewardVersion_undefined_where_or {
+  _status: RewardVersion_undefined__status_operator
+  name: RewardVersion_undefined_name_operator
+  image: RewardVersion_undefined_image_operator
+  huddleId: RewardVersion_undefined_huddleId_operator
+  code: RewardVersion_undefined_code_operator
+  dateComingSoon: RewardVersion_undefined_dateComingSoon_operator
+  dateSelecting: RewardVersion_undefined_dateSelecting_operator
+  dateAwarded: RewardVersion_undefined_dateAwarded_operator
+  claimBy: RewardVersion_undefined_claimBy_operator
+  legacyYear: RewardVersion_undefined_legacyYear_operator
+  awardedTo: RewardVersion_undefined_awardedTo_operator
+  id: RewardVersion_undefined_id_operator
+}
+
+input RewardVersion_undefined_where_and {
+  _status: RewardVersion_undefined__status_operator
+  name: RewardVersion_undefined_name_operator
+  image: RewardVersion_undefined_image_operator
+  huddleId: RewardVersion_undefined_huddleId_operator
+  code: RewardVersion_undefined_code_operator
+  dateComingSoon: RewardVersion_undefined_dateComingSoon_operator
+  dateSelecting: RewardVersion_undefined_dateSelecting_operator
+  dateAwarded: RewardVersion_undefined_dateAwarded_operator
+  claimBy: RewardVersion_undefined_claimBy_operator
+  legacyYear: RewardVersion_undefined_legacyYear_operator
+  awardedTo: RewardVersion_undefined_awardedTo_operator
+  id: RewardVersion_undefined_id_operator
+}
+
+type RewardVersion_undefined {
+  _status: RewardVersion_undefined__status
+  name: String!
+  image(where: RewardVersion_undefined_Image_where): Media
+  huddleId: RewardVersion_undefined_huddleId!
+  code: String!
+  dateComingSoon: DateTime!
+  dateSelecting: DateTime!
+  dateAwarded: DateTime!
+  claimBy: DateTime!
+  legacyYear: Float
+  awardedTo: String
+}
+
+enum RewardVersion_undefined__status {
+  draft
+  published
+}
+
+input RewardVersion_undefined_Image_where {
+  url: RewardVersion_undefined_Image_url_operator
+  filename: RewardVersion_undefined_Image_filename_operator
+  mimeType: RewardVersion_undefined_Image_mimeType_operator
+  filesize: RewardVersion_undefined_Image_filesize_operator
+  width: RewardVersion_undefined_Image_width_operator
+  height: RewardVersion_undefined_Image_height_operator
+  sizes__thumbnail__url: RewardVersion_undefined_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: RewardVersion_undefined_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: RewardVersion_undefined_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: RewardVersion_undefined_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: RewardVersion_undefined_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: RewardVersion_undefined_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: RewardVersion_undefined_Image_sizes__card__url_operator
+  sizes__card__width: RewardVersion_undefined_Image_sizes__card__width_operator
+  sizes__card__height: RewardVersion_undefined_Image_sizes__card__height_operator
+  sizes__card__mimeType: RewardVersion_undefined_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: RewardVersion_undefined_Image_sizes__card__filesize_operator
+  sizes__card__filename: RewardVersion_undefined_Image_sizes__card__filename_operator
+  sizes__tablet__url: RewardVersion_undefined_Image_sizes__tablet__url_operator
+  sizes__tablet__width: RewardVersion_undefined_Image_sizes__tablet__width_operator
+  sizes__tablet__height: RewardVersion_undefined_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: RewardVersion_undefined_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: RewardVersion_undefined_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: RewardVersion_undefined_Image_sizes__tablet__filename_operator
+  alt: RewardVersion_undefined_Image_alt_operator
+  id: RewardVersion_undefined_Image_id_operator
+  OR: [RewardVersion_undefined_Image_where_or]
+  AND: [RewardVersion_undefined_Image_where_and]
+}
+
+input RewardVersion_undefined_Image_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input RewardVersion_undefined_Image_where_or {
+  url: RewardVersion_undefined_Image_url_operator
+  filename: RewardVersion_undefined_Image_filename_operator
+  mimeType: RewardVersion_undefined_Image_mimeType_operator
+  filesize: RewardVersion_undefined_Image_filesize_operator
+  width: RewardVersion_undefined_Image_width_operator
+  height: RewardVersion_undefined_Image_height_operator
+  sizes__thumbnail__url: RewardVersion_undefined_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: RewardVersion_undefined_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: RewardVersion_undefined_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: RewardVersion_undefined_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: RewardVersion_undefined_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: RewardVersion_undefined_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: RewardVersion_undefined_Image_sizes__card__url_operator
+  sizes__card__width: RewardVersion_undefined_Image_sizes__card__width_operator
+  sizes__card__height: RewardVersion_undefined_Image_sizes__card__height_operator
+  sizes__card__mimeType: RewardVersion_undefined_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: RewardVersion_undefined_Image_sizes__card__filesize_operator
+  sizes__card__filename: RewardVersion_undefined_Image_sizes__card__filename_operator
+  sizes__tablet__url: RewardVersion_undefined_Image_sizes__tablet__url_operator
+  sizes__tablet__width: RewardVersion_undefined_Image_sizes__tablet__width_operator
+  sizes__tablet__height: RewardVersion_undefined_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: RewardVersion_undefined_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: RewardVersion_undefined_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: RewardVersion_undefined_Image_sizes__tablet__filename_operator
+  alt: RewardVersion_undefined_Image_alt_operator
+  id: RewardVersion_undefined_Image_id_operator
+}
+
+input RewardVersion_undefined_Image_where_and {
+  url: RewardVersion_undefined_Image_url_operator
+  filename: RewardVersion_undefined_Image_filename_operator
+  mimeType: RewardVersion_undefined_Image_mimeType_operator
+  filesize: RewardVersion_undefined_Image_filesize_operator
+  width: RewardVersion_undefined_Image_width_operator
+  height: RewardVersion_undefined_Image_height_operator
+  sizes__thumbnail__url: RewardVersion_undefined_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: RewardVersion_undefined_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: RewardVersion_undefined_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: RewardVersion_undefined_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: RewardVersion_undefined_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: RewardVersion_undefined_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: RewardVersion_undefined_Image_sizes__card__url_operator
+  sizes__card__width: RewardVersion_undefined_Image_sizes__card__width_operator
+  sizes__card__height: RewardVersion_undefined_Image_sizes__card__height_operator
+  sizes__card__mimeType: RewardVersion_undefined_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: RewardVersion_undefined_Image_sizes__card__filesize_operator
+  sizes__card__filename: RewardVersion_undefined_Image_sizes__card__filename_operator
+  sizes__tablet__url: RewardVersion_undefined_Image_sizes__tablet__url_operator
+  sizes__tablet__width: RewardVersion_undefined_Image_sizes__tablet__width_operator
+  sizes__tablet__height: RewardVersion_undefined_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: RewardVersion_undefined_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: RewardVersion_undefined_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: RewardVersion_undefined_Image_sizes__tablet__filename_operator
+  alt: RewardVersion_undefined_Image_alt_operator
+  id: RewardVersion_undefined_Image_id_operator
+}
+
+enum RewardVersion_undefined_huddleId {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+type versionsRewards {
+  docs: [RewardVersion]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input versionsReward_where {
+  parent: versionsReward_parent_operator
+  version___status: versionsReward_version___status_operator
+  version__name: versionsReward_version__name_operator
+  version__image: versionsReward_version__image_operator
+  version__huddleId: versionsReward_version__huddleId_operator
+  version__code: versionsReward_version__code_operator
+  version__dateComingSoon: versionsReward_version__dateComingSoon_operator
+  version__dateSelecting: versionsReward_version__dateSelecting_operator
+  version__dateAwarded: versionsReward_version__dateAwarded_operator
+  version__claimBy: versionsReward_version__claimBy_operator
+  version__legacyYear: versionsReward_version__legacyYear_operator
+  version__awardedTo: versionsReward_version__awardedTo_operator
+  id: versionsReward_id_operator
+  createdAt: versionsReward_createdAt_operator
+  updatedAt: versionsReward_updatedAt_operator
+  OR: [versionsReward_where_or]
+  AND: [versionsReward_where_and]
+}
+
+input versionsReward_parent_operator {
+  equals: String
+  not_equals: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsReward_version___status_operator {
+  equals: versionsReward_version___status_Input
+  not_equals: versionsReward_version___status_Input
+  in: [versionsReward_version___status_Input]
+  not_in: [versionsReward_version___status_Input]
+  all: [versionsReward_version___status_Input]
+  exists: Boolean
+}
+
+enum versionsReward_version___status_Input {
+  draft
+  published
+}
+
+input versionsReward_version__name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsReward_version__image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input versionsReward_version__huddleId_operator {
+  equals: versionsReward_version__huddleId_Input
+  not_equals: versionsReward_version__huddleId_Input
+  in: [versionsReward_version__huddleId_Input]
+  not_in: [versionsReward_version__huddleId_Input]
+  all: [versionsReward_version__huddleId_Input]
+}
+
+enum versionsReward_version__huddleId_Input {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input versionsReward_version__code_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsReward_version__dateComingSoon_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsReward_version__dateSelecting_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsReward_version__dateAwarded_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsReward_version__claimBy_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsReward_version__legacyYear_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input versionsReward_version__awardedTo_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input versionsReward_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input versionsReward_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsReward_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsReward_where_or {
+  parent: versionsReward_parent_operator
+  version___status: versionsReward_version___status_operator
+  version__name: versionsReward_version__name_operator
+  version__image: versionsReward_version__image_operator
+  version__huddleId: versionsReward_version__huddleId_operator
+  version__code: versionsReward_version__code_operator
+  version__dateComingSoon: versionsReward_version__dateComingSoon_operator
+  version__dateSelecting: versionsReward_version__dateSelecting_operator
+  version__dateAwarded: versionsReward_version__dateAwarded_operator
+  version__claimBy: versionsReward_version__claimBy_operator
+  version__legacyYear: versionsReward_version__legacyYear_operator
+  version__awardedTo: versionsReward_version__awardedTo_operator
+  id: versionsReward_id_operator
+  createdAt: versionsReward_createdAt_operator
+  updatedAt: versionsReward_updatedAt_operator
+}
+
+input versionsReward_where_and {
+  parent: versionsReward_parent_operator
+  version___status: versionsReward_version___status_operator
+  version__name: versionsReward_version__name_operator
+  version__image: versionsReward_version__image_operator
+  version__huddleId: versionsReward_version__huddleId_operator
+  version__code: versionsReward_version__code_operator
+  version__dateComingSoon: versionsReward_version__dateComingSoon_operator
+  version__dateSelecting: versionsReward_version__dateSelecting_operator
+  version__dateAwarded: versionsReward_version__dateAwarded_operator
+  version__claimBy: versionsReward_version__claimBy_operator
+  version__legacyYear: versionsReward_version__legacyYear_operator
+  version__awardedTo: versionsReward_version__awardedTo_operator
+  id: versionsReward_id_operator
+  createdAt: versionsReward_createdAt_operator
+  updatedAt: versionsReward_updatedAt_operator
+}
+
+type Poll {
+  id: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  _status: Poll__status
+  title: String!
+  slug: String!
+  opensAt: DateTime!
+  expiresAt: DateTime!
+  huddleId: Poll_huddleId!
+  image(where: Poll_Image_where): Media
+  question: String!
+  options: [Poll_Options]
+  blindVote: Boolean!
+  public: Boolean!
+  minSelections: Float!
+  maxSelections: Float!
+  category: Poll_category
+  text(depth: Int): JSON!
+  detailedDescription(depth: Int): JSON!
+  votingInstructions: String
+  views: Float
+  reactions: [Poll_Reactions]
+}
+
+enum Poll__status {
+  draft
+  published
+}
+
+enum Poll_huddleId {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input Poll_Image_where {
+  url: Poll_Image_url_operator
+  filename: Poll_Image_filename_operator
+  mimeType: Poll_Image_mimeType_operator
+  filesize: Poll_Image_filesize_operator
+  width: Poll_Image_width_operator
+  height: Poll_Image_height_operator
+  sizes__thumbnail__url: Poll_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Poll_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Poll_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Poll_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Poll_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Poll_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Poll_Image_sizes__card__url_operator
+  sizes__card__width: Poll_Image_sizes__card__width_operator
+  sizes__card__height: Poll_Image_sizes__card__height_operator
+  sizes__card__mimeType: Poll_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Poll_Image_sizes__card__filesize_operator
+  sizes__card__filename: Poll_Image_sizes__card__filename_operator
+  sizes__tablet__url: Poll_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Poll_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Poll_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Poll_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Poll_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Poll_Image_sizes__tablet__filename_operator
+  alt: Poll_Image_alt_operator
+  id: Poll_Image_id_operator
+  OR: [Poll_Image_where_or]
+  AND: [Poll_Image_where_and]
+}
+
+input Poll_Image_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Image_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Image_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Poll_Image_where_or {
+  url: Poll_Image_url_operator
+  filename: Poll_Image_filename_operator
+  mimeType: Poll_Image_mimeType_operator
+  filesize: Poll_Image_filesize_operator
+  width: Poll_Image_width_operator
+  height: Poll_Image_height_operator
+  sizes__thumbnail__url: Poll_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Poll_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Poll_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Poll_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Poll_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Poll_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Poll_Image_sizes__card__url_operator
+  sizes__card__width: Poll_Image_sizes__card__width_operator
+  sizes__card__height: Poll_Image_sizes__card__height_operator
+  sizes__card__mimeType: Poll_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Poll_Image_sizes__card__filesize_operator
+  sizes__card__filename: Poll_Image_sizes__card__filename_operator
+  sizes__tablet__url: Poll_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Poll_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Poll_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Poll_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Poll_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Poll_Image_sizes__tablet__filename_operator
+  alt: Poll_Image_alt_operator
+  id: Poll_Image_id_operator
+}
+
+input Poll_Image_where_and {
+  url: Poll_Image_url_operator
+  filename: Poll_Image_filename_operator
+  mimeType: Poll_Image_mimeType_operator
+  filesize: Poll_Image_filesize_operator
+  width: Poll_Image_width_operator
+  height: Poll_Image_height_operator
+  sizes__thumbnail__url: Poll_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Poll_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Poll_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Poll_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Poll_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Poll_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Poll_Image_sizes__card__url_operator
+  sizes__card__width: Poll_Image_sizes__card__width_operator
+  sizes__card__height: Poll_Image_sizes__card__height_operator
+  sizes__card__mimeType: Poll_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Poll_Image_sizes__card__filesize_operator
+  sizes__card__filename: Poll_Image_sizes__card__filename_operator
+  sizes__tablet__url: Poll_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Poll_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Poll_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Poll_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Poll_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Poll_Image_sizes__tablet__filename_operator
+  alt: Poll_Image_alt_operator
+  id: Poll_Image_id_operator
+}
+
+type Poll_Options {
+  text: String!
+  image(where: Poll_Options_Image_where): Media
+  id: String
+}
+
+input Poll_Options_Image_where {
+  url: Poll_Options_Image_url_operator
+  filename: Poll_Options_Image_filename_operator
+  mimeType: Poll_Options_Image_mimeType_operator
+  filesize: Poll_Options_Image_filesize_operator
+  width: Poll_Options_Image_width_operator
+  height: Poll_Options_Image_height_operator
+  sizes__thumbnail__url: Poll_Options_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Poll_Options_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Poll_Options_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Poll_Options_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Poll_Options_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Poll_Options_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Poll_Options_Image_sizes__card__url_operator
+  sizes__card__width: Poll_Options_Image_sizes__card__width_operator
+  sizes__card__height: Poll_Options_Image_sizes__card__height_operator
+  sizes__card__mimeType: Poll_Options_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Poll_Options_Image_sizes__card__filesize_operator
+  sizes__card__filename: Poll_Options_Image_sizes__card__filename_operator
+  sizes__tablet__url: Poll_Options_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Poll_Options_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Poll_Options_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Poll_Options_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Poll_Options_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Poll_Options_Image_sizes__tablet__filename_operator
+  alt: Poll_Options_Image_alt_operator
+  id: Poll_Options_Image_id_operator
+  OR: [Poll_Options_Image_where_or]
+  AND: [Poll_Options_Image_where_and]
+}
+
+input Poll_Options_Image_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_Options_Image_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_Options_Image_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Poll_Options_Image_where_or {
+  url: Poll_Options_Image_url_operator
+  filename: Poll_Options_Image_filename_operator
+  mimeType: Poll_Options_Image_mimeType_operator
+  filesize: Poll_Options_Image_filesize_operator
+  width: Poll_Options_Image_width_operator
+  height: Poll_Options_Image_height_operator
+  sizes__thumbnail__url: Poll_Options_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Poll_Options_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Poll_Options_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Poll_Options_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Poll_Options_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Poll_Options_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Poll_Options_Image_sizes__card__url_operator
+  sizes__card__width: Poll_Options_Image_sizes__card__width_operator
+  sizes__card__height: Poll_Options_Image_sizes__card__height_operator
+  sizes__card__mimeType: Poll_Options_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Poll_Options_Image_sizes__card__filesize_operator
+  sizes__card__filename: Poll_Options_Image_sizes__card__filename_operator
+  sizes__tablet__url: Poll_Options_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Poll_Options_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Poll_Options_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Poll_Options_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Poll_Options_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Poll_Options_Image_sizes__tablet__filename_operator
+  alt: Poll_Options_Image_alt_operator
+  id: Poll_Options_Image_id_operator
+}
+
+input Poll_Options_Image_where_and {
+  url: Poll_Options_Image_url_operator
+  filename: Poll_Options_Image_filename_operator
+  mimeType: Poll_Options_Image_mimeType_operator
+  filesize: Poll_Options_Image_filesize_operator
+  width: Poll_Options_Image_width_operator
+  height: Poll_Options_Image_height_operator
+  sizes__thumbnail__url: Poll_Options_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Poll_Options_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Poll_Options_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Poll_Options_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Poll_Options_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Poll_Options_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: Poll_Options_Image_sizes__card__url_operator
+  sizes__card__width: Poll_Options_Image_sizes__card__width_operator
+  sizes__card__height: Poll_Options_Image_sizes__card__height_operator
+  sizes__card__mimeType: Poll_Options_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: Poll_Options_Image_sizes__card__filesize_operator
+  sizes__card__filename: Poll_Options_Image_sizes__card__filename_operator
+  sizes__tablet__url: Poll_Options_Image_sizes__tablet__url_operator
+  sizes__tablet__width: Poll_Options_Image_sizes__tablet__width_operator
+  sizes__tablet__height: Poll_Options_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: Poll_Options_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: Poll_Options_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: Poll_Options_Image_sizes__tablet__filename_operator
+  alt: Poll_Options_Image_alt_operator
+  id: Poll_Options_Image_id_operator
+}
+
+enum Poll_category {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+type Poll_Reactions {
+  emoji: String!
+  count: Float
+  id: String
+}
+
+type Polls {
+  docs: [Poll]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input Poll_where {
+  _status: Poll__status_operator
+  title: Poll_title_operator
+  slug: Poll_slug_operator
+  opensAt: Poll_opensAt_operator
+  expiresAt: Poll_expiresAt_operator
+  huddleId: Poll_huddleId_operator
+  image: Poll_image_operator
+  question: Poll_question_operator
+  options__text: Poll_options__text_operator
+  options__image: Poll_options__image_operator
+  options__id: Poll_options__id_operator
+  blindVote: Poll_blindVote_operator
+  public: Poll_public_operator
+  minSelections: Poll_minSelections_operator
+  maxSelections: Poll_maxSelections_operator
+  category: Poll_category_operator
+  text: Poll_text_operator
+  detailedDescription: Poll_detailedDescription_operator
+  votingInstructions: Poll_votingInstructions_operator
+  views: Poll_views_operator
+  reactions__emoji: Poll_reactions__emoji_operator
+  reactions__count: Poll_reactions__count_operator
+  reactions__id: Poll_reactions__id_operator
+  id: Poll_id_operator
+  createdAt: Poll_createdAt_operator
+  updatedAt: Poll_updatedAt_operator
+  OR: [Poll_where_or]
+  AND: [Poll_where_and]
+}
+
+input Poll__status_operator {
+  equals: Poll__status_Input
+  not_equals: Poll__status_Input
+  in: [Poll__status_Input]
+  not_in: [Poll__status_Input]
+  all: [Poll__status_Input]
+  exists: Boolean
+}
+
+enum Poll__status_Input {
+  draft
+  published
+}
+
+input Poll_title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Poll_slug_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Poll_opensAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input Poll_expiresAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input Poll_huddleId_operator {
+  equals: Poll_huddleId_Input
+  not_equals: Poll_huddleId_Input
+  in: [Poll_huddleId_Input]
+  not_in: [Poll_huddleId_Input]
+  all: [Poll_huddleId_Input]
+}
+
+enum Poll_huddleId_Input {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input Poll_image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input Poll_question_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Poll_options__text_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Poll_options__image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input Poll_options__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_blindVote_operator {
+  equals: Boolean
+  not_equals: Boolean
+}
+
+input Poll_public_operator {
+  equals: Boolean
+  not_equals: Boolean
+}
+
+input Poll_minSelections_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input Poll_maxSelections_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input Poll_category_operator {
+  equals: Poll_category_Input
+  not_equals: Poll_category_Input
+  in: [Poll_category_Input]
+  not_in: [Poll_category_Input]
+  all: [Poll_category_Input]
+  exists: Boolean
+}
+
+enum Poll_category_Input {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+input Poll_text_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+}
+
+input Poll_detailedDescription_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+}
+
+input Poll_votingInstructions_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_views_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_reactions__emoji_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Poll_reactions__count_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Poll_reactions__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Poll_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Poll_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Poll_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Poll_where_or {
+  _status: Poll__status_operator
+  title: Poll_title_operator
+  slug: Poll_slug_operator
+  opensAt: Poll_opensAt_operator
+  expiresAt: Poll_expiresAt_operator
+  huddleId: Poll_huddleId_operator
+  image: Poll_image_operator
+  question: Poll_question_operator
+  options__text: Poll_options__text_operator
+  options__image: Poll_options__image_operator
+  options__id: Poll_options__id_operator
+  blindVote: Poll_blindVote_operator
+  public: Poll_public_operator
+  minSelections: Poll_minSelections_operator
+  maxSelections: Poll_maxSelections_operator
+  category: Poll_category_operator
+  text: Poll_text_operator
+  detailedDescription: Poll_detailedDescription_operator
+  votingInstructions: Poll_votingInstructions_operator
+  views: Poll_views_operator
+  reactions__emoji: Poll_reactions__emoji_operator
+  reactions__count: Poll_reactions__count_operator
+  reactions__id: Poll_reactions__id_operator
+  id: Poll_id_operator
+  createdAt: Poll_createdAt_operator
+  updatedAt: Poll_updatedAt_operator
+}
+
+input Poll_where_and {
+  _status: Poll__status_operator
+  title: Poll_title_operator
+  slug: Poll_slug_operator
+  opensAt: Poll_opensAt_operator
+  expiresAt: Poll_expiresAt_operator
+  huddleId: Poll_huddleId_operator
+  image: Poll_image_operator
+  question: Poll_question_operator
+  options__text: Poll_options__text_operator
+  options__image: Poll_options__image_operator
+  options__id: Poll_options__id_operator
+  blindVote: Poll_blindVote_operator
+  public: Poll_public_operator
+  minSelections: Poll_minSelections_operator
+  maxSelections: Poll_maxSelections_operator
+  category: Poll_category_operator
+  text: Poll_text_operator
+  detailedDescription: Poll_detailedDescription_operator
+  votingInstructions: Poll_votingInstructions_operator
+  views: Poll_views_operator
+  reactions__emoji: Poll_reactions__emoji_operator
+  reactions__count: Poll_reactions__count_operator
+  reactions__id: Poll_reactions__id_operator
+  id: Poll_id_operator
+  createdAt: Poll_createdAt_operator
+  updatedAt: Poll_updatedAt_operator
+}
+
+type PollVersion {
+  parent(where: PollVersion_undefined_where): Poll
+  version: PollVersion_undefined
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input PollVersion_undefined_where {
+  _status: PollVersion_undefined__status_operator
+  title: PollVersion_undefined_title_operator
+  slug: PollVersion_undefined_slug_operator
+  opensAt: PollVersion_undefined_opensAt_operator
+  expiresAt: PollVersion_undefined_expiresAt_operator
+  huddleId: PollVersion_undefined_huddleId_operator
+  image: PollVersion_undefined_image_operator
+  question: PollVersion_undefined_question_operator
+  options__text: PollVersion_undefined_options__text_operator
+  options__image: PollVersion_undefined_options__image_operator
+  options__id: PollVersion_undefined_options__id_operator
+  blindVote: PollVersion_undefined_blindVote_operator
+  public: PollVersion_undefined_public_operator
+  minSelections: PollVersion_undefined_minSelections_operator
+  maxSelections: PollVersion_undefined_maxSelections_operator
+  category: PollVersion_undefined_category_operator
+  text: PollVersion_undefined_text_operator
+  detailedDescription: PollVersion_undefined_detailedDescription_operator
+  votingInstructions: PollVersion_undefined_votingInstructions_operator
+  views: PollVersion_undefined_views_operator
+  reactions__emoji: PollVersion_undefined_reactions__emoji_operator
+  reactions__count: PollVersion_undefined_reactions__count_operator
+  reactions__id: PollVersion_undefined_reactions__id_operator
+  id: PollVersion_undefined_id_operator
+  OR: [PollVersion_undefined_where_or]
+  AND: [PollVersion_undefined_where_and]
+}
+
+input PollVersion_undefined__status_operator {
+  equals: PollVersion_undefined__status_Input
+  not_equals: PollVersion_undefined__status_Input
+  in: [PollVersion_undefined__status_Input]
+  not_in: [PollVersion_undefined__status_Input]
+  all: [PollVersion_undefined__status_Input]
+  exists: Boolean
+}
+
+enum PollVersion_undefined__status_Input {
+  draft
+  published
+}
+
+input PollVersion_undefined_title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input PollVersion_undefined_slug_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input PollVersion_undefined_opensAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input PollVersion_undefined_expiresAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input PollVersion_undefined_huddleId_operator {
+  equals: PollVersion_undefined_huddleId_Input
+  not_equals: PollVersion_undefined_huddleId_Input
+  in: [PollVersion_undefined_huddleId_Input]
+  not_in: [PollVersion_undefined_huddleId_Input]
+  all: [PollVersion_undefined_huddleId_Input]
+}
+
+enum PollVersion_undefined_huddleId_Input {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input PollVersion_undefined_image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_question_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input PollVersion_undefined_options__text_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input PollVersion_undefined_options__image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_options__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_blindVote_operator {
+  equals: Boolean
+  not_equals: Boolean
+}
+
+input PollVersion_undefined_public_operator {
+  equals: Boolean
+  not_equals: Boolean
+}
+
+input PollVersion_undefined_minSelections_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input PollVersion_undefined_maxSelections_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input PollVersion_undefined_category_operator {
+  equals: PollVersion_undefined_category_Input
+  not_equals: PollVersion_undefined_category_Input
+  in: [PollVersion_undefined_category_Input]
+  not_in: [PollVersion_undefined_category_Input]
+  all: [PollVersion_undefined_category_Input]
+  exists: Boolean
+}
+
+enum PollVersion_undefined_category_Input {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+input PollVersion_undefined_text_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+}
+
+input PollVersion_undefined_detailedDescription_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+}
+
+input PollVersion_undefined_votingInstructions_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_views_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_reactions__emoji_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input PollVersion_undefined_reactions__count_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_reactions__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input PollVersion_undefined_where_or {
+  _status: PollVersion_undefined__status_operator
+  title: PollVersion_undefined_title_operator
+  slug: PollVersion_undefined_slug_operator
+  opensAt: PollVersion_undefined_opensAt_operator
+  expiresAt: PollVersion_undefined_expiresAt_operator
+  huddleId: PollVersion_undefined_huddleId_operator
+  image: PollVersion_undefined_image_operator
+  question: PollVersion_undefined_question_operator
+  options__text: PollVersion_undefined_options__text_operator
+  options__image: PollVersion_undefined_options__image_operator
+  options__id: PollVersion_undefined_options__id_operator
+  blindVote: PollVersion_undefined_blindVote_operator
+  public: PollVersion_undefined_public_operator
+  minSelections: PollVersion_undefined_minSelections_operator
+  maxSelections: PollVersion_undefined_maxSelections_operator
+  category: PollVersion_undefined_category_operator
+  text: PollVersion_undefined_text_operator
+  detailedDescription: PollVersion_undefined_detailedDescription_operator
+  votingInstructions: PollVersion_undefined_votingInstructions_operator
+  views: PollVersion_undefined_views_operator
+  reactions__emoji: PollVersion_undefined_reactions__emoji_operator
+  reactions__count: PollVersion_undefined_reactions__count_operator
+  reactions__id: PollVersion_undefined_reactions__id_operator
+  id: PollVersion_undefined_id_operator
+}
+
+input PollVersion_undefined_where_and {
+  _status: PollVersion_undefined__status_operator
+  title: PollVersion_undefined_title_operator
+  slug: PollVersion_undefined_slug_operator
+  opensAt: PollVersion_undefined_opensAt_operator
+  expiresAt: PollVersion_undefined_expiresAt_operator
+  huddleId: PollVersion_undefined_huddleId_operator
+  image: PollVersion_undefined_image_operator
+  question: PollVersion_undefined_question_operator
+  options__text: PollVersion_undefined_options__text_operator
+  options__image: PollVersion_undefined_options__image_operator
+  options__id: PollVersion_undefined_options__id_operator
+  blindVote: PollVersion_undefined_blindVote_operator
+  public: PollVersion_undefined_public_operator
+  minSelections: PollVersion_undefined_minSelections_operator
+  maxSelections: PollVersion_undefined_maxSelections_operator
+  category: PollVersion_undefined_category_operator
+  text: PollVersion_undefined_text_operator
+  detailedDescription: PollVersion_undefined_detailedDescription_operator
+  votingInstructions: PollVersion_undefined_votingInstructions_operator
+  views: PollVersion_undefined_views_operator
+  reactions__emoji: PollVersion_undefined_reactions__emoji_operator
+  reactions__count: PollVersion_undefined_reactions__count_operator
+  reactions__id: PollVersion_undefined_reactions__id_operator
+  id: PollVersion_undefined_id_operator
+}
+
+type PollVersion_undefined {
+  _status: PollVersion_undefined__status
+  title: String!
+  slug: String!
+  opensAt: DateTime!
+  expiresAt: DateTime!
+  huddleId: PollVersion_undefined_huddleId!
+  image(where: PollVersion_undefined_Image_where): Media
+  question: String!
+  options: [PollVersion_undefined_Options]
+  blindVote: Boolean!
+  public: Boolean!
+  minSelections: Float!
+  maxSelections: Float!
+  category: PollVersion_undefined_category
+  text(depth: Int): JSON!
+  detailedDescription(depth: Int): JSON!
+  votingInstructions: String
+  views: Float
+  reactions: [PollVersion_undefined_Reactions]
+}
+
+enum PollVersion_undefined__status {
+  draft
+  published
+}
+
+enum PollVersion_undefined_huddleId {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input PollVersion_undefined_Image_where {
+  url: PollVersion_undefined_Image_url_operator
+  filename: PollVersion_undefined_Image_filename_operator
+  mimeType: PollVersion_undefined_Image_mimeType_operator
+  filesize: PollVersion_undefined_Image_filesize_operator
+  width: PollVersion_undefined_Image_width_operator
+  height: PollVersion_undefined_Image_height_operator
+  sizes__thumbnail__url: PollVersion_undefined_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: PollVersion_undefined_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: PollVersion_undefined_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: PollVersion_undefined_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: PollVersion_undefined_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: PollVersion_undefined_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: PollVersion_undefined_Image_sizes__card__url_operator
+  sizes__card__width: PollVersion_undefined_Image_sizes__card__width_operator
+  sizes__card__height: PollVersion_undefined_Image_sizes__card__height_operator
+  sizes__card__mimeType: PollVersion_undefined_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: PollVersion_undefined_Image_sizes__card__filesize_operator
+  sizes__card__filename: PollVersion_undefined_Image_sizes__card__filename_operator
+  sizes__tablet__url: PollVersion_undefined_Image_sizes__tablet__url_operator
+  sizes__tablet__width: PollVersion_undefined_Image_sizes__tablet__width_operator
+  sizes__tablet__height: PollVersion_undefined_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: PollVersion_undefined_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: PollVersion_undefined_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: PollVersion_undefined_Image_sizes__tablet__filename_operator
+  alt: PollVersion_undefined_Image_alt_operator
+  id: PollVersion_undefined_Image_id_operator
+  OR: [PollVersion_undefined_Image_where_or]
+  AND: [PollVersion_undefined_Image_where_and]
+}
+
+input PollVersion_undefined_Image_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input PollVersion_undefined_Image_where_or {
+  url: PollVersion_undefined_Image_url_operator
+  filename: PollVersion_undefined_Image_filename_operator
+  mimeType: PollVersion_undefined_Image_mimeType_operator
+  filesize: PollVersion_undefined_Image_filesize_operator
+  width: PollVersion_undefined_Image_width_operator
+  height: PollVersion_undefined_Image_height_operator
+  sizes__thumbnail__url: PollVersion_undefined_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: PollVersion_undefined_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: PollVersion_undefined_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: PollVersion_undefined_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: PollVersion_undefined_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: PollVersion_undefined_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: PollVersion_undefined_Image_sizes__card__url_operator
+  sizes__card__width: PollVersion_undefined_Image_sizes__card__width_operator
+  sizes__card__height: PollVersion_undefined_Image_sizes__card__height_operator
+  sizes__card__mimeType: PollVersion_undefined_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: PollVersion_undefined_Image_sizes__card__filesize_operator
+  sizes__card__filename: PollVersion_undefined_Image_sizes__card__filename_operator
+  sizes__tablet__url: PollVersion_undefined_Image_sizes__tablet__url_operator
+  sizes__tablet__width: PollVersion_undefined_Image_sizes__tablet__width_operator
+  sizes__tablet__height: PollVersion_undefined_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: PollVersion_undefined_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: PollVersion_undefined_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: PollVersion_undefined_Image_sizes__tablet__filename_operator
+  alt: PollVersion_undefined_Image_alt_operator
+  id: PollVersion_undefined_Image_id_operator
+}
+
+input PollVersion_undefined_Image_where_and {
+  url: PollVersion_undefined_Image_url_operator
+  filename: PollVersion_undefined_Image_filename_operator
+  mimeType: PollVersion_undefined_Image_mimeType_operator
+  filesize: PollVersion_undefined_Image_filesize_operator
+  width: PollVersion_undefined_Image_width_operator
+  height: PollVersion_undefined_Image_height_operator
+  sizes__thumbnail__url: PollVersion_undefined_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: PollVersion_undefined_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: PollVersion_undefined_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: PollVersion_undefined_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: PollVersion_undefined_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: PollVersion_undefined_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: PollVersion_undefined_Image_sizes__card__url_operator
+  sizes__card__width: PollVersion_undefined_Image_sizes__card__width_operator
+  sizes__card__height: PollVersion_undefined_Image_sizes__card__height_operator
+  sizes__card__mimeType: PollVersion_undefined_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: PollVersion_undefined_Image_sizes__card__filesize_operator
+  sizes__card__filename: PollVersion_undefined_Image_sizes__card__filename_operator
+  sizes__tablet__url: PollVersion_undefined_Image_sizes__tablet__url_operator
+  sizes__tablet__width: PollVersion_undefined_Image_sizes__tablet__width_operator
+  sizes__tablet__height: PollVersion_undefined_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: PollVersion_undefined_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: PollVersion_undefined_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: PollVersion_undefined_Image_sizes__tablet__filename_operator
+  alt: PollVersion_undefined_Image_alt_operator
+  id: PollVersion_undefined_Image_id_operator
+}
+
+type PollVersion_undefined_Options {
+  text: String!
+  image(where: PollVersion_undefined_Options_Image_where): Media
+  id: String
+}
+
+input PollVersion_undefined_Options_Image_where {
+  url: PollVersion_undefined_Options_Image_url_operator
+  filename: PollVersion_undefined_Options_Image_filename_operator
+  mimeType: PollVersion_undefined_Options_Image_mimeType_operator
+  filesize: PollVersion_undefined_Options_Image_filesize_operator
+  width: PollVersion_undefined_Options_Image_width_operator
+  height: PollVersion_undefined_Options_Image_height_operator
+  sizes__thumbnail__url: PollVersion_undefined_Options_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: PollVersion_undefined_Options_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: PollVersion_undefined_Options_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: PollVersion_undefined_Options_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: PollVersion_undefined_Options_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: PollVersion_undefined_Options_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: PollVersion_undefined_Options_Image_sizes__card__url_operator
+  sizes__card__width: PollVersion_undefined_Options_Image_sizes__card__width_operator
+  sizes__card__height: PollVersion_undefined_Options_Image_sizes__card__height_operator
+  sizes__card__mimeType: PollVersion_undefined_Options_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: PollVersion_undefined_Options_Image_sizes__card__filesize_operator
+  sizes__card__filename: PollVersion_undefined_Options_Image_sizes__card__filename_operator
+  sizes__tablet__url: PollVersion_undefined_Options_Image_sizes__tablet__url_operator
+  sizes__tablet__width: PollVersion_undefined_Options_Image_sizes__tablet__width_operator
+  sizes__tablet__height: PollVersion_undefined_Options_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: PollVersion_undefined_Options_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: PollVersion_undefined_Options_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: PollVersion_undefined_Options_Image_sizes__tablet__filename_operator
+  alt: PollVersion_undefined_Options_Image_alt_operator
+  id: PollVersion_undefined_Options_Image_id_operator
+  OR: [PollVersion_undefined_Options_Image_where_or]
+  AND: [PollVersion_undefined_Options_Image_where_and]
+}
+
+input PollVersion_undefined_Options_Image_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__card__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__card__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__card__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__card__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__card__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__card__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__tablet__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__tablet__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__tablet__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__tablet__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__tablet__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_sizes__tablet__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input PollVersion_undefined_Options_Image_where_or {
+  url: PollVersion_undefined_Options_Image_url_operator
+  filename: PollVersion_undefined_Options_Image_filename_operator
+  mimeType: PollVersion_undefined_Options_Image_mimeType_operator
+  filesize: PollVersion_undefined_Options_Image_filesize_operator
+  width: PollVersion_undefined_Options_Image_width_operator
+  height: PollVersion_undefined_Options_Image_height_operator
+  sizes__thumbnail__url: PollVersion_undefined_Options_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: PollVersion_undefined_Options_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: PollVersion_undefined_Options_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: PollVersion_undefined_Options_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: PollVersion_undefined_Options_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: PollVersion_undefined_Options_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: PollVersion_undefined_Options_Image_sizes__card__url_operator
+  sizes__card__width: PollVersion_undefined_Options_Image_sizes__card__width_operator
+  sizes__card__height: PollVersion_undefined_Options_Image_sizes__card__height_operator
+  sizes__card__mimeType: PollVersion_undefined_Options_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: PollVersion_undefined_Options_Image_sizes__card__filesize_operator
+  sizes__card__filename: PollVersion_undefined_Options_Image_sizes__card__filename_operator
+  sizes__tablet__url: PollVersion_undefined_Options_Image_sizes__tablet__url_operator
+  sizes__tablet__width: PollVersion_undefined_Options_Image_sizes__tablet__width_operator
+  sizes__tablet__height: PollVersion_undefined_Options_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: PollVersion_undefined_Options_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: PollVersion_undefined_Options_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: PollVersion_undefined_Options_Image_sizes__tablet__filename_operator
+  alt: PollVersion_undefined_Options_Image_alt_operator
+  id: PollVersion_undefined_Options_Image_id_operator
+}
+
+input PollVersion_undefined_Options_Image_where_and {
+  url: PollVersion_undefined_Options_Image_url_operator
+  filename: PollVersion_undefined_Options_Image_filename_operator
+  mimeType: PollVersion_undefined_Options_Image_mimeType_operator
+  filesize: PollVersion_undefined_Options_Image_filesize_operator
+  width: PollVersion_undefined_Options_Image_width_operator
+  height: PollVersion_undefined_Options_Image_height_operator
+  sizes__thumbnail__url: PollVersion_undefined_Options_Image_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: PollVersion_undefined_Options_Image_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: PollVersion_undefined_Options_Image_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: PollVersion_undefined_Options_Image_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: PollVersion_undefined_Options_Image_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: PollVersion_undefined_Options_Image_sizes__thumbnail__filename_operator
+  sizes__card__url: PollVersion_undefined_Options_Image_sizes__card__url_operator
+  sizes__card__width: PollVersion_undefined_Options_Image_sizes__card__width_operator
+  sizes__card__height: PollVersion_undefined_Options_Image_sizes__card__height_operator
+  sizes__card__mimeType: PollVersion_undefined_Options_Image_sizes__card__mimeType_operator
+  sizes__card__filesize: PollVersion_undefined_Options_Image_sizes__card__filesize_operator
+  sizes__card__filename: PollVersion_undefined_Options_Image_sizes__card__filename_operator
+  sizes__tablet__url: PollVersion_undefined_Options_Image_sizes__tablet__url_operator
+  sizes__tablet__width: PollVersion_undefined_Options_Image_sizes__tablet__width_operator
+  sizes__tablet__height: PollVersion_undefined_Options_Image_sizes__tablet__height_operator
+  sizes__tablet__mimeType: PollVersion_undefined_Options_Image_sizes__tablet__mimeType_operator
+  sizes__tablet__filesize: PollVersion_undefined_Options_Image_sizes__tablet__filesize_operator
+  sizes__tablet__filename: PollVersion_undefined_Options_Image_sizes__tablet__filename_operator
+  alt: PollVersion_undefined_Options_Image_alt_operator
+  id: PollVersion_undefined_Options_Image_id_operator
+}
+
+enum PollVersion_undefined_category {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+type PollVersion_undefined_Reactions {
+  emoji: String!
+  count: Float
+  id: String
+}
+
+type versionsPolls {
+  docs: [PollVersion]
+  totalDocs: Int
+  offset: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Boolean
+}
+
+input versionsPoll_where {
+  parent: versionsPoll_parent_operator
+  version___status: versionsPoll_version___status_operator
+  version__title: versionsPoll_version__title_operator
+  version__slug: versionsPoll_version__slug_operator
+  version__opensAt: versionsPoll_version__opensAt_operator
+  version__expiresAt: versionsPoll_version__expiresAt_operator
+  version__huddleId: versionsPoll_version__huddleId_operator
+  version__image: versionsPoll_version__image_operator
+  version__question: versionsPoll_version__question_operator
+  version__options__text: versionsPoll_version__options__text_operator
+  version__options__image: versionsPoll_version__options__image_operator
+  version__options__id: versionsPoll_version__options__id_operator
+  version__blindVote: versionsPoll_version__blindVote_operator
+  version__public: versionsPoll_version__public_operator
+  version__minSelections: versionsPoll_version__minSelections_operator
+  version__maxSelections: versionsPoll_version__maxSelections_operator
+  version__category: versionsPoll_version__category_operator
+  version__text: versionsPoll_version__text_operator
+  version__detailedDescription: versionsPoll_version__detailedDescription_operator
+  version__votingInstructions: versionsPoll_version__votingInstructions_operator
+  version__views: versionsPoll_version__views_operator
+  version__reactions__emoji: versionsPoll_version__reactions__emoji_operator
+  version__reactions__count: versionsPoll_version__reactions__count_operator
+  version__reactions__id: versionsPoll_version__reactions__id_operator
+  id: versionsPoll_id_operator
+  createdAt: versionsPoll_createdAt_operator
+  updatedAt: versionsPoll_updatedAt_operator
+  OR: [versionsPoll_where_or]
+  AND: [versionsPoll_where_and]
+}
+
+input versionsPoll_parent_operator {
+  equals: String
+  not_equals: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsPoll_version___status_operator {
+  equals: versionsPoll_version___status_Input
+  not_equals: versionsPoll_version___status_Input
+  in: [versionsPoll_version___status_Input]
+  not_in: [versionsPoll_version___status_Input]
+  all: [versionsPoll_version___status_Input]
+  exists: Boolean
+}
+
+enum versionsPoll_version___status_Input {
+  draft
+  published
+}
+
+input versionsPoll_version__title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsPoll_version__slug_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsPoll_version__opensAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsPoll_version__expiresAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsPoll_version__huddleId_operator {
+  equals: versionsPoll_version__huddleId_Input
+  not_equals: versionsPoll_version__huddleId_Input
+  in: [versionsPoll_version__huddleId_Input]
+  not_in: [versionsPoll_version__huddleId_Input]
+  all: [versionsPoll_version__huddleId_Input]
+}
+
+enum versionsPoll_version__huddleId_Input {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input versionsPoll_version__image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input versionsPoll_version__question_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsPoll_version__options__text_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsPoll_version__options__image_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input versionsPoll_version__options__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input versionsPoll_version__blindVote_operator {
+  equals: Boolean
+  not_equals: Boolean
+}
+
+input versionsPoll_version__public_operator {
+  equals: Boolean
+  not_equals: Boolean
+}
+
+input versionsPoll_version__minSelections_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input versionsPoll_version__maxSelections_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input versionsPoll_version__category_operator {
+  equals: versionsPoll_version__category_Input
+  not_equals: versionsPoll_version__category_Input
+  in: [versionsPoll_version__category_Input]
+  not_in: [versionsPoll_version__category_Input]
+  all: [versionsPoll_version__category_Input]
+  exists: Boolean
+}
+
+enum versionsPoll_version__category_Input {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+input versionsPoll_version__text_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+}
+
+input versionsPoll_version__detailedDescription_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+}
+
+input versionsPoll_version__votingInstructions_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input versionsPoll_version__views_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input versionsPoll_version__reactions__emoji_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsPoll_version__reactions__count_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input versionsPoll_version__reactions__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input versionsPoll_id_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input versionsPoll_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsPoll_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsPoll_where_or {
+  parent: versionsPoll_parent_operator
+  version___status: versionsPoll_version___status_operator
+  version__title: versionsPoll_version__title_operator
+  version__slug: versionsPoll_version__slug_operator
+  version__opensAt: versionsPoll_version__opensAt_operator
+  version__expiresAt: versionsPoll_version__expiresAt_operator
+  version__huddleId: versionsPoll_version__huddleId_operator
+  version__image: versionsPoll_version__image_operator
+  version__question: versionsPoll_version__question_operator
+  version__options__text: versionsPoll_version__options__text_operator
+  version__options__image: versionsPoll_version__options__image_operator
+  version__options__id: versionsPoll_version__options__id_operator
+  version__blindVote: versionsPoll_version__blindVote_operator
+  version__public: versionsPoll_version__public_operator
+  version__minSelections: versionsPoll_version__minSelections_operator
+  version__maxSelections: versionsPoll_version__maxSelections_operator
+  version__category: versionsPoll_version__category_operator
+  version__text: versionsPoll_version__text_operator
+  version__detailedDescription: versionsPoll_version__detailedDescription_operator
+  version__votingInstructions: versionsPoll_version__votingInstructions_operator
+  version__views: versionsPoll_version__views_operator
+  version__reactions__emoji: versionsPoll_version__reactions__emoji_operator
+  version__reactions__count: versionsPoll_version__reactions__count_operator
+  version__reactions__id: versionsPoll_version__reactions__id_operator
+  id: versionsPoll_id_operator
+  createdAt: versionsPoll_createdAt_operator
+  updatedAt: versionsPoll_updatedAt_operator
+}
+
+input versionsPoll_where_and {
+  parent: versionsPoll_parent_operator
+  version___status: versionsPoll_version___status_operator
+  version__title: versionsPoll_version__title_operator
+  version__slug: versionsPoll_version__slug_operator
+  version__opensAt: versionsPoll_version__opensAt_operator
+  version__expiresAt: versionsPoll_version__expiresAt_operator
+  version__huddleId: versionsPoll_version__huddleId_operator
+  version__image: versionsPoll_version__image_operator
+  version__question: versionsPoll_version__question_operator
+  version__options__text: versionsPoll_version__options__text_operator
+  version__options__image: versionsPoll_version__options__image_operator
+  version__options__id: versionsPoll_version__options__id_operator
+  version__blindVote: versionsPoll_version__blindVote_operator
+  version__public: versionsPoll_version__public_operator
+  version__minSelections: versionsPoll_version__minSelections_operator
+  version__maxSelections: versionsPoll_version__maxSelections_operator
+  version__category: versionsPoll_version__category_operator
+  version__text: versionsPoll_version__text_operator
+  version__detailedDescription: versionsPoll_version__detailedDescription_operator
+  version__votingInstructions: versionsPoll_version__votingInstructions_operator
+  version__views: versionsPoll_version__views_operator
+  version__reactions__emoji: versionsPoll_version__reactions__emoji_operator
+  version__reactions__count: versionsPoll_version__reactions__count_operator
+  version__reactions__id: versionsPoll_version__reactions__id_operator
+  id: versionsPoll_id_operator
+  createdAt: versionsPoll_createdAt_operator
+  updatedAt: versionsPoll_updatedAt_operator
+}
+
+type Preference {
+  key: String!
+  value: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Access {
+  canAccessAdmin: Boolean!
+  users: UserAccess
+  services: ServiceAccess
+  media: MediaAccess
+  rewards: RewardAccess
+  polls: PollAccess
+}
+
+type UserAccess {
+  fields: UserFields
+  create: UserCreateAccess
+  read: UserReadAccess
+  update: UserUpdateAccess
+  delete: UserDeleteAccess
+  unlock: UserUnlockAccess
+}
+
+type UserFields {
+  email: UserFields_email
+  role: UserFields_role
+  password: UserFields_password
+}
+
+type UserFields_email {
+  create: UserFields_email_Create
+  read: UserFields_email_Read
+  update: UserFields_email_Update
+  delete: UserFields_email_Delete
+}
+
+type UserFields_email_Create {
+  permission: Boolean!
+}
+
+type UserFields_email_Read {
+  permission: Boolean!
+}
+
+type UserFields_email_Update {
+  permission: Boolean!
+}
+
+type UserFields_email_Delete {
+  permission: Boolean!
+}
+
+type UserFields_role {
+  create: UserFields_role_Create
+  read: UserFields_role_Read
+  update: UserFields_role_Update
+  delete: UserFields_role_Delete
+}
+
+type UserFields_role_Create {
+  permission: Boolean!
+}
+
+type UserFields_role_Read {
+  permission: Boolean!
+}
+
+type UserFields_role_Update {
+  permission: Boolean!
+}
+
+type UserFields_role_Delete {
+  permission: Boolean!
+}
+
+type UserFields_password {
+  create: UserFields_password_Create
+  read: UserFields_password_Read
+  update: UserFields_password_Update
+  delete: UserFields_password_Delete
+}
+
+type UserFields_password_Create {
+  permission: Boolean!
+}
+
+type UserFields_password_Read {
+  permission: Boolean!
+}
+
+type UserFields_password_Update {
+  permission: Boolean!
+}
+
+type UserFields_password_Delete {
+  permission: Boolean!
+}
+
+type UserCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+  @specifiedBy(
+    url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
+  )
+
+type UserReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type UserUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type UserDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type UserUnlockAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServiceAccess {
+  fields: ServiceFields
+  create: ServiceCreateAccess
+  read: ServiceReadAccess
+  update: ServiceUpdateAccess
+  delete: ServiceDeleteAccess
+  unlock: ServiceUnlockAccess
+}
+
+type ServiceFields {
+  enableAPIKey: ServiceFields_enableAPIKey
+  apiKey: ServiceFields_apiKey
+  email: ServiceFields_email
+  name: ServiceFields_name
+  password: ServiceFields_password
+}
+
+type ServiceFields_enableAPIKey {
+  create: ServiceFields_enableAPIKey_Create
+  read: ServiceFields_enableAPIKey_Read
+  update: ServiceFields_enableAPIKey_Update
+  delete: ServiceFields_enableAPIKey_Delete
+}
+
+type ServiceFields_enableAPIKey_Create {
+  permission: Boolean!
+}
+
+type ServiceFields_enableAPIKey_Read {
+  permission: Boolean!
+}
+
+type ServiceFields_enableAPIKey_Update {
+  permission: Boolean!
+}
+
+type ServiceFields_enableAPIKey_Delete {
+  permission: Boolean!
+}
+
+type ServiceFields_apiKey {
+  create: ServiceFields_apiKey_Create
+  read: ServiceFields_apiKey_Read
+  update: ServiceFields_apiKey_Update
+  delete: ServiceFields_apiKey_Delete
+}
+
+type ServiceFields_apiKey_Create {
+  permission: Boolean!
+}
+
+type ServiceFields_apiKey_Read {
+  permission: Boolean!
+}
+
+type ServiceFields_apiKey_Update {
+  permission: Boolean!
+}
+
+type ServiceFields_apiKey_Delete {
+  permission: Boolean!
+}
+
+type ServiceFields_email {
+  create: ServiceFields_email_Create
+  read: ServiceFields_email_Read
+  update: ServiceFields_email_Update
+  delete: ServiceFields_email_Delete
+}
+
+type ServiceFields_email_Create {
+  permission: Boolean!
+}
+
+type ServiceFields_email_Read {
+  permission: Boolean!
+}
+
+type ServiceFields_email_Update {
+  permission: Boolean!
+}
+
+type ServiceFields_email_Delete {
+  permission: Boolean!
+}
+
+type ServiceFields_name {
+  create: ServiceFields_name_Create
+  read: ServiceFields_name_Read
+  update: ServiceFields_name_Update
+  delete: ServiceFields_name_Delete
+}
+
+type ServiceFields_name_Create {
+  permission: Boolean!
+}
+
+type ServiceFields_name_Read {
+  permission: Boolean!
+}
+
+type ServiceFields_name_Update {
+  permission: Boolean!
+}
+
+type ServiceFields_name_Delete {
+  permission: Boolean!
+}
+
+type ServiceFields_password {
+  create: ServiceFields_password_Create
+  read: ServiceFields_password_Read
+  update: ServiceFields_password_Update
+  delete: ServiceFields_password_Delete
+}
+
+type ServiceFields_password_Create {
+  permission: Boolean!
+}
+
+type ServiceFields_password_Read {
+  permission: Boolean!
+}
+
+type ServiceFields_password_Update {
+  permission: Boolean!
+}
+
+type ServiceFields_password_Delete {
+  permission: Boolean!
+}
+
+type ServiceCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServiceReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServiceUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServiceDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServiceUnlockAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type MediaAccess {
+  fields: MediaFields
+  create: MediaCreateAccess
+  read: MediaReadAccess
+  update: MediaUpdateAccess
+  delete: MediaDeleteAccess
+}
+
+type MediaFields {
+  url: MediaFields_url
+  filename: MediaFields_filename
+  mimeType: MediaFields_mimeType
+  filesize: MediaFields_filesize
+  width: MediaFields_width
+  height: MediaFields_height
+  sizes: MediaFields_sizes
+  alt: MediaFields_alt
+}
+
+type MediaFields_url {
+  create: MediaFields_url_Create
+  read: MediaFields_url_Read
+  update: MediaFields_url_Update
+  delete: MediaFields_url_Delete
+}
+
+type MediaFields_url_Create {
+  permission: Boolean!
+}
+
+type MediaFields_url_Read {
+  permission: Boolean!
+}
+
+type MediaFields_url_Update {
+  permission: Boolean!
+}
+
+type MediaFields_url_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_filename {
+  create: MediaFields_filename_Create
+  read: MediaFields_filename_Read
+  update: MediaFields_filename_Update
+  delete: MediaFields_filename_Delete
+}
+
+type MediaFields_filename_Create {
+  permission: Boolean!
+}
+
+type MediaFields_filename_Read {
+  permission: Boolean!
+}
+
+type MediaFields_filename_Update {
+  permission: Boolean!
+}
+
+type MediaFields_filename_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_mimeType {
+  create: MediaFields_mimeType_Create
+  read: MediaFields_mimeType_Read
+  update: MediaFields_mimeType_Update
+  delete: MediaFields_mimeType_Delete
+}
+
+type MediaFields_mimeType_Create {
+  permission: Boolean!
+}
+
+type MediaFields_mimeType_Read {
+  permission: Boolean!
+}
+
+type MediaFields_mimeType_Update {
+  permission: Boolean!
+}
+
+type MediaFields_mimeType_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_filesize {
+  create: MediaFields_filesize_Create
+  read: MediaFields_filesize_Read
+  update: MediaFields_filesize_Update
+  delete: MediaFields_filesize_Delete
+}
+
+type MediaFields_filesize_Create {
+  permission: Boolean!
+}
+
+type MediaFields_filesize_Read {
+  permission: Boolean!
+}
+
+type MediaFields_filesize_Update {
+  permission: Boolean!
+}
+
+type MediaFields_filesize_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_width {
+  create: MediaFields_width_Create
+  read: MediaFields_width_Read
+  update: MediaFields_width_Update
+  delete: MediaFields_width_Delete
+}
+
+type MediaFields_width_Create {
+  permission: Boolean!
+}
+
+type MediaFields_width_Read {
+  permission: Boolean!
+}
+
+type MediaFields_width_Update {
+  permission: Boolean!
+}
+
+type MediaFields_width_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_height {
+  create: MediaFields_height_Create
+  read: MediaFields_height_Read
+  update: MediaFields_height_Update
+  delete: MediaFields_height_Delete
+}
+
+type MediaFields_height_Create {
+  permission: Boolean!
+}
+
+type MediaFields_height_Read {
+  permission: Boolean!
+}
+
+type MediaFields_height_Update {
+  permission: Boolean!
+}
+
+type MediaFields_height_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes {
+  create: MediaFields_sizes_Create
+  read: MediaFields_sizes_Read
+  update: MediaFields_sizes_Update
+  delete: MediaFields_sizes_Delete
+  fields: MediaFields_sizes_Fields
+}
+
+type MediaFields_sizes_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_Fields {
+  thumbnail: MediaFields_sizes_thumbnail
+  card: MediaFields_sizes_card
+  tablet: MediaFields_sizes_tablet
+}
+
+type MediaFields_sizes_thumbnail {
+  create: MediaFields_sizes_thumbnail_Create
+  read: MediaFields_sizes_thumbnail_Read
+  update: MediaFields_sizes_thumbnail_Update
+  delete: MediaFields_sizes_thumbnail_Delete
+  fields: MediaFields_sizes_thumbnail_Fields
+}
+
+type MediaFields_sizes_thumbnail_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_Fields {
+  url: MediaFields_sizes_thumbnail_url
+  width: MediaFields_sizes_thumbnail_width
+  height: MediaFields_sizes_thumbnail_height
+  mimeType: MediaFields_sizes_thumbnail_mimeType
+  filesize: MediaFields_sizes_thumbnail_filesize
+  filename: MediaFields_sizes_thumbnail_filename
+}
+
+type MediaFields_sizes_thumbnail_url {
+  create: MediaFields_sizes_thumbnail_url_Create
+  read: MediaFields_sizes_thumbnail_url_Read
+  update: MediaFields_sizes_thumbnail_url_Update
+  delete: MediaFields_sizes_thumbnail_url_Delete
+}
+
+type MediaFields_sizes_thumbnail_url_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_url_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_url_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_url_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_width {
+  create: MediaFields_sizes_thumbnail_width_Create
+  read: MediaFields_sizes_thumbnail_width_Read
+  update: MediaFields_sizes_thumbnail_width_Update
+  delete: MediaFields_sizes_thumbnail_width_Delete
+}
+
+type MediaFields_sizes_thumbnail_width_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_width_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_width_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_width_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_height {
+  create: MediaFields_sizes_thumbnail_height_Create
+  read: MediaFields_sizes_thumbnail_height_Read
+  update: MediaFields_sizes_thumbnail_height_Update
+  delete: MediaFields_sizes_thumbnail_height_Delete
+}
+
+type MediaFields_sizes_thumbnail_height_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_height_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_height_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_height_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_mimeType {
+  create: MediaFields_sizes_thumbnail_mimeType_Create
+  read: MediaFields_sizes_thumbnail_mimeType_Read
+  update: MediaFields_sizes_thumbnail_mimeType_Update
+  delete: MediaFields_sizes_thumbnail_mimeType_Delete
+}
+
+type MediaFields_sizes_thumbnail_mimeType_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_mimeType_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_mimeType_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_mimeType_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filesize {
+  create: MediaFields_sizes_thumbnail_filesize_Create
+  read: MediaFields_sizes_thumbnail_filesize_Read
+  update: MediaFields_sizes_thumbnail_filesize_Update
+  delete: MediaFields_sizes_thumbnail_filesize_Delete
+}
+
+type MediaFields_sizes_thumbnail_filesize_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filesize_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filesize_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filesize_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filename {
+  create: MediaFields_sizes_thumbnail_filename_Create
+  read: MediaFields_sizes_thumbnail_filename_Read
+  update: MediaFields_sizes_thumbnail_filename_Update
+  delete: MediaFields_sizes_thumbnail_filename_Delete
+}
+
+type MediaFields_sizes_thumbnail_filename_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filename_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filename_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_thumbnail_filename_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card {
+  create: MediaFields_sizes_card_Create
+  read: MediaFields_sizes_card_Read
+  update: MediaFields_sizes_card_Update
+  delete: MediaFields_sizes_card_Delete
+  fields: MediaFields_sizes_card_Fields
+}
+
+type MediaFields_sizes_card_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_Fields {
+  url: MediaFields_sizes_card_url
+  width: MediaFields_sizes_card_width
+  height: MediaFields_sizes_card_height
+  mimeType: MediaFields_sizes_card_mimeType
+  filesize: MediaFields_sizes_card_filesize
+  filename: MediaFields_sizes_card_filename
+}
+
+type MediaFields_sizes_card_url {
+  create: MediaFields_sizes_card_url_Create
+  read: MediaFields_sizes_card_url_Read
+  update: MediaFields_sizes_card_url_Update
+  delete: MediaFields_sizes_card_url_Delete
+}
+
+type MediaFields_sizes_card_url_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_url_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_url_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_url_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_width {
+  create: MediaFields_sizes_card_width_Create
+  read: MediaFields_sizes_card_width_Read
+  update: MediaFields_sizes_card_width_Update
+  delete: MediaFields_sizes_card_width_Delete
+}
+
+type MediaFields_sizes_card_width_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_width_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_width_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_width_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_height {
+  create: MediaFields_sizes_card_height_Create
+  read: MediaFields_sizes_card_height_Read
+  update: MediaFields_sizes_card_height_Update
+  delete: MediaFields_sizes_card_height_Delete
+}
+
+type MediaFields_sizes_card_height_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_height_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_height_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_height_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_mimeType {
+  create: MediaFields_sizes_card_mimeType_Create
+  read: MediaFields_sizes_card_mimeType_Read
+  update: MediaFields_sizes_card_mimeType_Update
+  delete: MediaFields_sizes_card_mimeType_Delete
+}
+
+type MediaFields_sizes_card_mimeType_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_mimeType_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_mimeType_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_mimeType_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filesize {
+  create: MediaFields_sizes_card_filesize_Create
+  read: MediaFields_sizes_card_filesize_Read
+  update: MediaFields_sizes_card_filesize_Update
+  delete: MediaFields_sizes_card_filesize_Delete
+}
+
+type MediaFields_sizes_card_filesize_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filesize_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filesize_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filesize_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filename {
+  create: MediaFields_sizes_card_filename_Create
+  read: MediaFields_sizes_card_filename_Read
+  update: MediaFields_sizes_card_filename_Update
+  delete: MediaFields_sizes_card_filename_Delete
+}
+
+type MediaFields_sizes_card_filename_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filename_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filename_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_card_filename_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet {
+  create: MediaFields_sizes_tablet_Create
+  read: MediaFields_sizes_tablet_Read
+  update: MediaFields_sizes_tablet_Update
+  delete: MediaFields_sizes_tablet_Delete
+  fields: MediaFields_sizes_tablet_Fields
+}
+
+type MediaFields_sizes_tablet_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_Fields {
+  url: MediaFields_sizes_tablet_url
+  width: MediaFields_sizes_tablet_width
+  height: MediaFields_sizes_tablet_height
+  mimeType: MediaFields_sizes_tablet_mimeType
+  filesize: MediaFields_sizes_tablet_filesize
+  filename: MediaFields_sizes_tablet_filename
+}
+
+type MediaFields_sizes_tablet_url {
+  create: MediaFields_sizes_tablet_url_Create
+  read: MediaFields_sizes_tablet_url_Read
+  update: MediaFields_sizes_tablet_url_Update
+  delete: MediaFields_sizes_tablet_url_Delete
+}
+
+type MediaFields_sizes_tablet_url_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_url_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_url_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_url_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_width {
+  create: MediaFields_sizes_tablet_width_Create
+  read: MediaFields_sizes_tablet_width_Read
+  update: MediaFields_sizes_tablet_width_Update
+  delete: MediaFields_sizes_tablet_width_Delete
+}
+
+type MediaFields_sizes_tablet_width_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_width_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_width_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_width_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_height {
+  create: MediaFields_sizes_tablet_height_Create
+  read: MediaFields_sizes_tablet_height_Read
+  update: MediaFields_sizes_tablet_height_Update
+  delete: MediaFields_sizes_tablet_height_Delete
+}
+
+type MediaFields_sizes_tablet_height_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_height_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_height_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_height_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_mimeType {
+  create: MediaFields_sizes_tablet_mimeType_Create
+  read: MediaFields_sizes_tablet_mimeType_Read
+  update: MediaFields_sizes_tablet_mimeType_Update
+  delete: MediaFields_sizes_tablet_mimeType_Delete
+}
+
+type MediaFields_sizes_tablet_mimeType_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_mimeType_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_mimeType_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_mimeType_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filesize {
+  create: MediaFields_sizes_tablet_filesize_Create
+  read: MediaFields_sizes_tablet_filesize_Read
+  update: MediaFields_sizes_tablet_filesize_Update
+  delete: MediaFields_sizes_tablet_filesize_Delete
+}
+
+type MediaFields_sizes_tablet_filesize_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filesize_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filesize_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filesize_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filename {
+  create: MediaFields_sizes_tablet_filename_Create
+  read: MediaFields_sizes_tablet_filename_Read
+  update: MediaFields_sizes_tablet_filename_Update
+  delete: MediaFields_sizes_tablet_filename_Delete
+}
+
+type MediaFields_sizes_tablet_filename_Create {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filename_Read {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filename_Update {
+  permission: Boolean!
+}
+
+type MediaFields_sizes_tablet_filename_Delete {
+  permission: Boolean!
+}
+
+type MediaFields_alt {
+  create: MediaFields_alt_Create
+  read: MediaFields_alt_Read
+  update: MediaFields_alt_Update
+  delete: MediaFields_alt_Delete
+}
+
+type MediaFields_alt_Create {
+  permission: Boolean!
+}
+
+type MediaFields_alt_Read {
+  permission: Boolean!
+}
+
+type MediaFields_alt_Update {
+  permission: Boolean!
+}
+
+type MediaFields_alt_Delete {
+  permission: Boolean!
+}
+
+type MediaCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type MediaReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type MediaUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type MediaDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type RewardAccess {
+  fields: RewardFields
+  create: RewardCreateAccess
+  read: RewardReadAccess
+  update: RewardUpdateAccess
+  delete: RewardDeleteAccess
+  readVersions: RewardReadVersionsAccess
+}
+
+type RewardFields {
+  _status: RewardFields__status
+  name: RewardFields_name
+  image: RewardFields_image
+  huddleId: RewardFields_huddleId
+  code: RewardFields_code
+  dateComingSoon: RewardFields_dateComingSoon
+  dateSelecting: RewardFields_dateSelecting
+  dateAwarded: RewardFields_dateAwarded
+  claimBy: RewardFields_claimBy
+  legacyYear: RewardFields_legacyYear
+  awardedTo: RewardFields_awardedTo
+}
+
+type RewardFields__status {
+  create: RewardFields__status_Create
+  read: RewardFields__status_Read
+  update: RewardFields__status_Update
+  delete: RewardFields__status_Delete
+}
+
+type RewardFields__status_Create {
+  permission: Boolean!
+}
+
+type RewardFields__status_Read {
+  permission: Boolean!
+}
+
+type RewardFields__status_Update {
+  permission: Boolean!
+}
+
+type RewardFields__status_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_name {
+  create: RewardFields_name_Create
+  read: RewardFields_name_Read
+  update: RewardFields_name_Update
+  delete: RewardFields_name_Delete
+}
+
+type RewardFields_name_Create {
+  permission: Boolean!
+}
+
+type RewardFields_name_Read {
+  permission: Boolean!
+}
+
+type RewardFields_name_Update {
+  permission: Boolean!
+}
+
+type RewardFields_name_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_image {
+  create: RewardFields_image_Create
+  read: RewardFields_image_Read
+  update: RewardFields_image_Update
+  delete: RewardFields_image_Delete
+}
+
+type RewardFields_image_Create {
+  permission: Boolean!
+}
+
+type RewardFields_image_Read {
+  permission: Boolean!
+}
+
+type RewardFields_image_Update {
+  permission: Boolean!
+}
+
+type RewardFields_image_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_huddleId {
+  create: RewardFields_huddleId_Create
+  read: RewardFields_huddleId_Read
+  update: RewardFields_huddleId_Update
+  delete: RewardFields_huddleId_Delete
+}
+
+type RewardFields_huddleId_Create {
+  permission: Boolean!
+}
+
+type RewardFields_huddleId_Read {
+  permission: Boolean!
+}
+
+type RewardFields_huddleId_Update {
+  permission: Boolean!
+}
+
+type RewardFields_huddleId_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_code {
+  create: RewardFields_code_Create
+  read: RewardFields_code_Read
+  update: RewardFields_code_Update
+  delete: RewardFields_code_Delete
+}
+
+type RewardFields_code_Create {
+  permission: Boolean!
+}
+
+type RewardFields_code_Read {
+  permission: Boolean!
+}
+
+type RewardFields_code_Update {
+  permission: Boolean!
+}
+
+type RewardFields_code_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_dateComingSoon {
+  create: RewardFields_dateComingSoon_Create
+  read: RewardFields_dateComingSoon_Read
+  update: RewardFields_dateComingSoon_Update
+  delete: RewardFields_dateComingSoon_Delete
+}
+
+type RewardFields_dateComingSoon_Create {
+  permission: Boolean!
+}
+
+type RewardFields_dateComingSoon_Read {
+  permission: Boolean!
+}
+
+type RewardFields_dateComingSoon_Update {
+  permission: Boolean!
+}
+
+type RewardFields_dateComingSoon_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_dateSelecting {
+  create: RewardFields_dateSelecting_Create
+  read: RewardFields_dateSelecting_Read
+  update: RewardFields_dateSelecting_Update
+  delete: RewardFields_dateSelecting_Delete
+}
+
+type RewardFields_dateSelecting_Create {
+  permission: Boolean!
+}
+
+type RewardFields_dateSelecting_Read {
+  permission: Boolean!
+}
+
+type RewardFields_dateSelecting_Update {
+  permission: Boolean!
+}
+
+type RewardFields_dateSelecting_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_dateAwarded {
+  create: RewardFields_dateAwarded_Create
+  read: RewardFields_dateAwarded_Read
+  update: RewardFields_dateAwarded_Update
+  delete: RewardFields_dateAwarded_Delete
+}
+
+type RewardFields_dateAwarded_Create {
+  permission: Boolean!
+}
+
+type RewardFields_dateAwarded_Read {
+  permission: Boolean!
+}
+
+type RewardFields_dateAwarded_Update {
+  permission: Boolean!
+}
+
+type RewardFields_dateAwarded_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_claimBy {
+  create: RewardFields_claimBy_Create
+  read: RewardFields_claimBy_Read
+  update: RewardFields_claimBy_Update
+  delete: RewardFields_claimBy_Delete
+}
+
+type RewardFields_claimBy_Create {
+  permission: Boolean!
+}
+
+type RewardFields_claimBy_Read {
+  permission: Boolean!
+}
+
+type RewardFields_claimBy_Update {
+  permission: Boolean!
+}
+
+type RewardFields_claimBy_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_legacyYear {
+  create: RewardFields_legacyYear_Create
+  read: RewardFields_legacyYear_Read
+  update: RewardFields_legacyYear_Update
+  delete: RewardFields_legacyYear_Delete
+}
+
+type RewardFields_legacyYear_Create {
+  permission: Boolean!
+}
+
+type RewardFields_legacyYear_Read {
+  permission: Boolean!
+}
+
+type RewardFields_legacyYear_Update {
+  permission: Boolean!
+}
+
+type RewardFields_legacyYear_Delete {
+  permission: Boolean!
+}
+
+type RewardFields_awardedTo {
+  create: RewardFields_awardedTo_Create
+  read: RewardFields_awardedTo_Read
+  update: RewardFields_awardedTo_Update
+  delete: RewardFields_awardedTo_Delete
+}
+
+type RewardFields_awardedTo_Create {
+  permission: Boolean!
+}
+
+type RewardFields_awardedTo_Read {
+  permission: Boolean!
+}
+
+type RewardFields_awardedTo_Update {
+  permission: Boolean!
+}
+
+type RewardFields_awardedTo_Delete {
+  permission: Boolean!
+}
+
+type RewardCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type RewardReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type RewardUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type RewardDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type RewardReadVersionsAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PollAccess {
+  fields: PollFields
+  create: PollCreateAccess
+  read: PollReadAccess
+  update: PollUpdateAccess
+  delete: PollDeleteAccess
+  readVersions: PollReadVersionsAccess
+}
+
+type PollFields {
+  _status: PollFields__status
+  title: PollFields_title
+  slug: PollFields_slug
+  opensAt: PollFields_opensAt
+  expiresAt: PollFields_expiresAt
+  huddleId: PollFields_huddleId
+  image: PollFields_image
+  question: PollFields_question
+  options: PollFields_options
+  blindVote: PollFields_blindVote
+  public: PollFields_public
+  minSelections: PollFields_minSelections
+  maxSelections: PollFields_maxSelections
+  category: PollFields_category
+  text: PollFields_text
+  detailedDescription: PollFields_detailedDescription
+  votingInstructions: PollFields_votingInstructions
+  views: PollFields_views
+  reactions: PollFields_reactions
+}
+
+type PollFields__status {
+  create: PollFields__status_Create
+  read: PollFields__status_Read
+  update: PollFields__status_Update
+  delete: PollFields__status_Delete
+}
+
+type PollFields__status_Create {
+  permission: Boolean!
+}
+
+type PollFields__status_Read {
+  permission: Boolean!
+}
+
+type PollFields__status_Update {
+  permission: Boolean!
+}
+
+type PollFields__status_Delete {
+  permission: Boolean!
+}
+
+type PollFields_title {
+  create: PollFields_title_Create
+  read: PollFields_title_Read
+  update: PollFields_title_Update
+  delete: PollFields_title_Delete
+}
+
+type PollFields_title_Create {
+  permission: Boolean!
+}
+
+type PollFields_title_Read {
+  permission: Boolean!
+}
+
+type PollFields_title_Update {
+  permission: Boolean!
+}
+
+type PollFields_title_Delete {
+  permission: Boolean!
+}
+
+type PollFields_slug {
+  create: PollFields_slug_Create
+  read: PollFields_slug_Read
+  update: PollFields_slug_Update
+  delete: PollFields_slug_Delete
+}
+
+type PollFields_slug_Create {
+  permission: Boolean!
+}
+
+type PollFields_slug_Read {
+  permission: Boolean!
+}
+
+type PollFields_slug_Update {
+  permission: Boolean!
+}
+
+type PollFields_slug_Delete {
+  permission: Boolean!
+}
+
+type PollFields_opensAt {
+  create: PollFields_opensAt_Create
+  read: PollFields_opensAt_Read
+  update: PollFields_opensAt_Update
+  delete: PollFields_opensAt_Delete
+}
+
+type PollFields_opensAt_Create {
+  permission: Boolean!
+}
+
+type PollFields_opensAt_Read {
+  permission: Boolean!
+}
+
+type PollFields_opensAt_Update {
+  permission: Boolean!
+}
+
+type PollFields_opensAt_Delete {
+  permission: Boolean!
+}
+
+type PollFields_expiresAt {
+  create: PollFields_expiresAt_Create
+  read: PollFields_expiresAt_Read
+  update: PollFields_expiresAt_Update
+  delete: PollFields_expiresAt_Delete
+}
+
+type PollFields_expiresAt_Create {
+  permission: Boolean!
+}
+
+type PollFields_expiresAt_Read {
+  permission: Boolean!
+}
+
+type PollFields_expiresAt_Update {
+  permission: Boolean!
+}
+
+type PollFields_expiresAt_Delete {
+  permission: Boolean!
+}
+
+type PollFields_huddleId {
+  create: PollFields_huddleId_Create
+  read: PollFields_huddleId_Read
+  update: PollFields_huddleId_Update
+  delete: PollFields_huddleId_Delete
+}
+
+type PollFields_huddleId_Create {
+  permission: Boolean!
+}
+
+type PollFields_huddleId_Read {
+  permission: Boolean!
+}
+
+type PollFields_huddleId_Update {
+  permission: Boolean!
+}
+
+type PollFields_huddleId_Delete {
+  permission: Boolean!
+}
+
+type PollFields_image {
+  create: PollFields_image_Create
+  read: PollFields_image_Read
+  update: PollFields_image_Update
+  delete: PollFields_image_Delete
+}
+
+type PollFields_image_Create {
+  permission: Boolean!
+}
+
+type PollFields_image_Read {
+  permission: Boolean!
+}
+
+type PollFields_image_Update {
+  permission: Boolean!
+}
+
+type PollFields_image_Delete {
+  permission: Boolean!
+}
+
+type PollFields_question {
+  create: PollFields_question_Create
+  read: PollFields_question_Read
+  update: PollFields_question_Update
+  delete: PollFields_question_Delete
+}
+
+type PollFields_question_Create {
+  permission: Boolean!
+}
+
+type PollFields_question_Read {
+  permission: Boolean!
+}
+
+type PollFields_question_Update {
+  permission: Boolean!
+}
+
+type PollFields_question_Delete {
+  permission: Boolean!
+}
+
+type PollFields_options {
+  create: PollFields_options_Create
+  read: PollFields_options_Read
+  update: PollFields_options_Update
+  delete: PollFields_options_Delete
+  fields: PollFields_options_Fields
+}
+
+type PollFields_options_Create {
+  permission: Boolean!
+}
+
+type PollFields_options_Read {
+  permission: Boolean!
+}
+
+type PollFields_options_Update {
+  permission: Boolean!
+}
+
+type PollFields_options_Delete {
+  permission: Boolean!
+}
+
+type PollFields_options_Fields {
+  text: PollFields_options_text
+  image: PollFields_options_image
+  id: PollFields_options_id
+}
+
+type PollFields_options_text {
+  create: PollFields_options_text_Create
+  read: PollFields_options_text_Read
+  update: PollFields_options_text_Update
+  delete: PollFields_options_text_Delete
+}
+
+type PollFields_options_text_Create {
+  permission: Boolean!
+}
+
+type PollFields_options_text_Read {
+  permission: Boolean!
+}
+
+type PollFields_options_text_Update {
+  permission: Boolean!
+}
+
+type PollFields_options_text_Delete {
+  permission: Boolean!
+}
+
+type PollFields_options_image {
+  create: PollFields_options_image_Create
+  read: PollFields_options_image_Read
+  update: PollFields_options_image_Update
+  delete: PollFields_options_image_Delete
+}
+
+type PollFields_options_image_Create {
+  permission: Boolean!
+}
+
+type PollFields_options_image_Read {
+  permission: Boolean!
+}
+
+type PollFields_options_image_Update {
+  permission: Boolean!
+}
+
+type PollFields_options_image_Delete {
+  permission: Boolean!
+}
+
+type PollFields_options_id {
+  create: PollFields_options_id_Create
+  read: PollFields_options_id_Read
+  update: PollFields_options_id_Update
+  delete: PollFields_options_id_Delete
+}
+
+type PollFields_options_id_Create {
+  permission: Boolean!
+}
+
+type PollFields_options_id_Read {
+  permission: Boolean!
+}
+
+type PollFields_options_id_Update {
+  permission: Boolean!
+}
+
+type PollFields_options_id_Delete {
+  permission: Boolean!
+}
+
+type PollFields_blindVote {
+  create: PollFields_blindVote_Create
+  read: PollFields_blindVote_Read
+  update: PollFields_blindVote_Update
+  delete: PollFields_blindVote_Delete
+}
+
+type PollFields_blindVote_Create {
+  permission: Boolean!
+}
+
+type PollFields_blindVote_Read {
+  permission: Boolean!
+}
+
+type PollFields_blindVote_Update {
+  permission: Boolean!
+}
+
+type PollFields_blindVote_Delete {
+  permission: Boolean!
+}
+
+type PollFields_public {
+  create: PollFields_public_Create
+  read: PollFields_public_Read
+  update: PollFields_public_Update
+  delete: PollFields_public_Delete
+}
+
+type PollFields_public_Create {
+  permission: Boolean!
+}
+
+type PollFields_public_Read {
+  permission: Boolean!
+}
+
+type PollFields_public_Update {
+  permission: Boolean!
+}
+
+type PollFields_public_Delete {
+  permission: Boolean!
+}
+
+type PollFields_minSelections {
+  create: PollFields_minSelections_Create
+  read: PollFields_minSelections_Read
+  update: PollFields_minSelections_Update
+  delete: PollFields_minSelections_Delete
+}
+
+type PollFields_minSelections_Create {
+  permission: Boolean!
+}
+
+type PollFields_minSelections_Read {
+  permission: Boolean!
+}
+
+type PollFields_minSelections_Update {
+  permission: Boolean!
+}
+
+type PollFields_minSelections_Delete {
+  permission: Boolean!
+}
+
+type PollFields_maxSelections {
+  create: PollFields_maxSelections_Create
+  read: PollFields_maxSelections_Read
+  update: PollFields_maxSelections_Update
+  delete: PollFields_maxSelections_Delete
+}
+
+type PollFields_maxSelections_Create {
+  permission: Boolean!
+}
+
+type PollFields_maxSelections_Read {
+  permission: Boolean!
+}
+
+type PollFields_maxSelections_Update {
+  permission: Boolean!
+}
+
+type PollFields_maxSelections_Delete {
+  permission: Boolean!
+}
+
+type PollFields_category {
+  create: PollFields_category_Create
+  read: PollFields_category_Read
+  update: PollFields_category_Update
+  delete: PollFields_category_Delete
+}
+
+type PollFields_category_Create {
+  permission: Boolean!
+}
+
+type PollFields_category_Read {
+  permission: Boolean!
+}
+
+type PollFields_category_Update {
+  permission: Boolean!
+}
+
+type PollFields_category_Delete {
+  permission: Boolean!
+}
+
+type PollFields_text {
+  create: PollFields_text_Create
+  read: PollFields_text_Read
+  update: PollFields_text_Update
+  delete: PollFields_text_Delete
+}
+
+type PollFields_text_Create {
+  permission: Boolean!
+}
+
+type PollFields_text_Read {
+  permission: Boolean!
+}
+
+type PollFields_text_Update {
+  permission: Boolean!
+}
+
+type PollFields_text_Delete {
+  permission: Boolean!
+}
+
+type PollFields_detailedDescription {
+  create: PollFields_detailedDescription_Create
+  read: PollFields_detailedDescription_Read
+  update: PollFields_detailedDescription_Update
+  delete: PollFields_detailedDescription_Delete
+}
+
+type PollFields_detailedDescription_Create {
+  permission: Boolean!
+}
+
+type PollFields_detailedDescription_Read {
+  permission: Boolean!
+}
+
+type PollFields_detailedDescription_Update {
+  permission: Boolean!
+}
+
+type PollFields_detailedDescription_Delete {
+  permission: Boolean!
+}
+
+type PollFields_votingInstructions {
+  create: PollFields_votingInstructions_Create
+  read: PollFields_votingInstructions_Read
+  update: PollFields_votingInstructions_Update
+  delete: PollFields_votingInstructions_Delete
+}
+
+type PollFields_votingInstructions_Create {
+  permission: Boolean!
+}
+
+type PollFields_votingInstructions_Read {
+  permission: Boolean!
+}
+
+type PollFields_votingInstructions_Update {
+  permission: Boolean!
+}
+
+type PollFields_votingInstructions_Delete {
+  permission: Boolean!
+}
+
+type PollFields_views {
+  create: PollFields_views_Create
+  read: PollFields_views_Read
+  update: PollFields_views_Update
+  delete: PollFields_views_Delete
+}
+
+type PollFields_views_Create {
+  permission: Boolean!
+}
+
+type PollFields_views_Read {
+  permission: Boolean!
+}
+
+type PollFields_views_Update {
+  permission: Boolean!
+}
+
+type PollFields_views_Delete {
+  permission: Boolean!
+}
+
+type PollFields_reactions {
+  create: PollFields_reactions_Create
+  read: PollFields_reactions_Read
+  update: PollFields_reactions_Update
+  delete: PollFields_reactions_Delete
+  fields: PollFields_reactions_Fields
+}
+
+type PollFields_reactions_Create {
+  permission: Boolean!
+}
+
+type PollFields_reactions_Read {
+  permission: Boolean!
+}
+
+type PollFields_reactions_Update {
+  permission: Boolean!
+}
+
+type PollFields_reactions_Delete {
+  permission: Boolean!
+}
+
+type PollFields_reactions_Fields {
+  emoji: PollFields_reactions_emoji
+  count: PollFields_reactions_count
+  id: PollFields_reactions_id
+}
+
+type PollFields_reactions_emoji {
+  create: PollFields_reactions_emoji_Create
+  read: PollFields_reactions_emoji_Read
+  update: PollFields_reactions_emoji_Update
+  delete: PollFields_reactions_emoji_Delete
+}
+
+type PollFields_reactions_emoji_Create {
+  permission: Boolean!
+}
+
+type PollFields_reactions_emoji_Read {
+  permission: Boolean!
+}
+
+type PollFields_reactions_emoji_Update {
+  permission: Boolean!
+}
+
+type PollFields_reactions_emoji_Delete {
+  permission: Boolean!
+}
+
+type PollFields_reactions_count {
+  create: PollFields_reactions_count_Create
+  read: PollFields_reactions_count_Read
+  update: PollFields_reactions_count_Update
+  delete: PollFields_reactions_count_Delete
+}
+
+type PollFields_reactions_count_Create {
+  permission: Boolean!
+}
+
+type PollFields_reactions_count_Read {
+  permission: Boolean!
+}
+
+type PollFields_reactions_count_Update {
+  permission: Boolean!
+}
+
+type PollFields_reactions_count_Delete {
+  permission: Boolean!
+}
+
+type PollFields_reactions_id {
+  create: PollFields_reactions_id_Create
+  read: PollFields_reactions_id_Read
+  update: PollFields_reactions_id_Update
+  delete: PollFields_reactions_id_Delete
+}
+
+type PollFields_reactions_id_Create {
+  permission: Boolean!
+}
+
+type PollFields_reactions_id_Read {
+  permission: Boolean!
+}
+
+type PollFields_reactions_id_Update {
+  permission: Boolean!
+}
+
+type PollFields_reactions_id_Delete {
+  permission: Boolean!
+}
+
+type PollCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PollReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PollUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PollDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PollReadVersionsAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type Mutation {
+  createUser(data: mutationUserInput!, draft: Boolean): User
+  updateUser(
+    id: String!
+    data: mutationUserUpdateInput!
+    draft: Boolean
+    autosave: Boolean
+  ): User
+  deleteUser(id: String!): User
+  refreshTokenUser(token: String): usersRefreshedUser
+  logoutUser: String
+  unlockUser(email: String!): Boolean!
+  loginUser(email: String, password: String): usersLoginResult
+  forgotPasswordUser(
+    email: String!
+    disableEmail: Boolean
+    expiration: Int
+  ): Boolean!
+  resetPasswordUser(token: String, password: String): usersResetPassword
+  verifyEmailUser(token: String): Boolean
+  createService(data: mutationServiceInput!, draft: Boolean): Service
+  updateService(
+    id: String!
+    data: mutationServiceUpdateInput!
+    draft: Boolean
+    autosave: Boolean
+  ): Service
+  deleteService(id: String!): Service
+  refreshTokenService(token: String): servicesRefreshedService
+  logoutService: String
+  unlockService(email: String!): Boolean!
+  loginService(email: String, password: String): servicesLoginResult
+  forgotPasswordService(
+    email: String!
+    disableEmail: Boolean
+    expiration: Int
+  ): Boolean!
+  resetPasswordService(token: String, password: String): servicesResetPassword
+  verifyEmailService(token: String): Boolean
+  createMedia(data: mutationMediaInput!, draft: Boolean): Media
+  updateMedia(
+    id: String!
+    data: mutationMediaUpdateInput!
+    draft: Boolean
+    autosave: Boolean
+  ): Media
+  deleteMedia(id: String!): Media
+  createReward(data: mutationRewardInput!, draft: Boolean): Reward
+  updateReward(
+    id: String!
+    data: mutationRewardUpdateInput!
+    draft: Boolean
+    autosave: Boolean
+  ): Reward
+  deleteReward(id: String!): Reward
+  restoreVersionReward(id: String): Reward
+  createPoll(data: mutationPollInput!, draft: Boolean): Poll
+  updatePoll(
+    id: String!
+    data: mutationPollUpdateInput!
+    draft: Boolean
+    autosave: Boolean
+  ): Poll
+  deletePoll(id: String!): Poll
+  restoreVersionPoll(id: String): Poll
+  updatePreference(key: String!, value: JSON): Preference
+  deletePreference(key: String!): Preference
+}
+
+input mutationUserInput {
+  email: String
+  resetPasswordToken: String
+  resetPasswordExpiration: String
+  loginAttempts: Float
+  lockUntil: String
+  role: User_role_MutationInput!
+  password: String!
+}
+
+enum User_role_MutationInput {
+  admin
+  developer
+  editor
+  viewer
+}
+
+input mutationUserUpdateInput {
+  email: String
+  resetPasswordToken: String
+  resetPasswordExpiration: String
+  loginAttempts: Float
+  lockUntil: String
+  role: UserUpdate_role_MutationInput
+  password: String
+}
+
+enum UserUpdate_role_MutationInput {
+  admin
+  developer
+  editor
+  viewer
+}
+
+type usersRefreshedUser {
+  user: usersJWT
+  refreshedToken: String
+  exp: Int
+}
+
+type usersJWT {
+  email: EmailAddress!
+  collection: String!
+}
+
+type usersLoginResult {
+  token: String
+  user: User
+  exp: Int
+}
+
+type usersResetPassword {
+  token: String
+  user: User
+}
+
+input mutationServiceInput {
+  enableAPIKey: Boolean
+  apiKey: String
+  apiKeyIndex: String
+  email: String
+  resetPasswordToken: String
+  resetPasswordExpiration: String
+  loginAttempts: Float
+  lockUntil: String
+  name: String!
+  password: String!
+}
+
+input mutationServiceUpdateInput {
+  enableAPIKey: Boolean
+  apiKey: String
+  apiKeyIndex: String
+  email: String
+  resetPasswordToken: String
+  resetPasswordExpiration: String
+  loginAttempts: Float
+  lockUntil: String
+  name: String
+  password: String
+}
+
+type servicesRefreshedService {
+  user: servicesJWT
+  refreshedToken: String
+  exp: Int
+}
+
+type servicesJWT {
+  email: EmailAddress!
+  collection: String!
+}
+
+type servicesLoginResult {
+  token: String
+  user: Service
+  exp: Int
+}
+
+type servicesResetPassword {
+  token: String
+  user: Service
+}
+
+input mutationMediaInput {
+  url: String
+  filename: String
+  mimeType: String
+  filesize: Float
+  width: Float
+  height: Float
+  sizes: mutationMedia_SizesInput
+  alt: String
+}
+
+input mutationMedia_SizesInput {
+  thumbnail: mutationMedia_Sizes_thumbnailInput
+  card: mutationMedia_Sizes_cardInput
+  tablet: mutationMedia_Sizes_tabletInput
+}
+
+input mutationMedia_Sizes_thumbnailInput {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+input mutationMedia_Sizes_cardInput {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+input mutationMedia_Sizes_tabletInput {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+input mutationMediaUpdateInput {
+  url: String
+  filename: String
+  mimeType: String
+  filesize: Float
+  width: Float
+  height: Float
+  sizes: mutationMediaUpdate_SizesInput
+  alt: String
+}
+
+input mutationMediaUpdate_SizesInput {
+  thumbnail: mutationMediaUpdate_Sizes_thumbnailInput
+  card: mutationMediaUpdate_Sizes_cardInput
+  tablet: mutationMediaUpdate_Sizes_tabletInput
+}
+
+input mutationMediaUpdate_Sizes_thumbnailInput {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+input mutationMediaUpdate_Sizes_cardInput {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+input mutationMediaUpdate_Sizes_tabletInput {
+  url: String
+  width: Float
+  height: Float
+  mimeType: String
+  filesize: Float
+  filename: String
+}
+
+input mutationRewardInput {
+  _status: Reward__status_MutationInput
+  name: String!
+  image: String
+  huddleId: Reward_huddleId_MutationInput!
+  code: String!
+  dateComingSoon: String!
+  dateSelecting: String!
+  dateAwarded: String!
+  claimBy: String!
+  legacyYear: Float
+  awardedTo: String
+}
+
+enum Reward__status_MutationInput {
+  draft
+  published
+}
+
+enum Reward_huddleId_MutationInput {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input mutationRewardUpdateInput {
+  _status: RewardUpdate__status_MutationInput
+  name: String
+  image: String
+  huddleId: RewardUpdate_huddleId_MutationInput
+  code: String
+  dateComingSoon: String
+  dateSelecting: String
+  dateAwarded: String
+  claimBy: String
+  legacyYear: Float
+  awardedTo: String
+}
+
+enum RewardUpdate__status_MutationInput {
+  draft
+  published
+}
+
+enum RewardUpdate_huddleId_MutationInput {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input mutationPollInput {
+  _status: Poll__status_MutationInput
+  title: String!
+  slug: String!
+  opensAt: String!
+  expiresAt: String!
+  huddleId: Poll_huddleId_MutationInput!
+  image: String
+  question: String!
+  options: [mutationPoll_OptionsInput]
+  blindVote: Boolean
+  public: Boolean
+  minSelections: Float!
+  maxSelections: Float!
+  category: Poll_category_MutationInput
+  text: JSON!
+  detailedDescription: JSON!
+  votingInstructions: String
+  views: Float
+  reactions: [mutationPoll_ReactionsInput]
+}
+
+enum Poll__status_MutationInput {
+  draft
+  published
+}
+
+enum Poll_huddleId_MutationInput {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input mutationPoll_OptionsInput {
+  text: String!
+  image: String
+  id: String
+}
+
+enum Poll_category_MutationInput {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+input mutationPoll_ReactionsInput {
+  emoji: String!
+  count: Float
+  id: String
+}
+
+input mutationPollUpdateInput {
+  _status: PollUpdate__status_MutationInput
+  title: String
+  slug: String
+  opensAt: String
+  expiresAt: String
+  huddleId: PollUpdate_huddleId_MutationInput
+  image: String
+  question: String
+  options: [mutationPollUpdate_OptionsInput]
+  blindVote: Boolean
+  public: Boolean
+  minSelections: Float
+  maxSelections: Float
+  category: PollUpdate_category_MutationInput
+  text: JSON
+  detailedDescription: JSON
+  votingInstructions: String
+  views: Float
+  reactions: [mutationPollUpdate_ReactionsInput]
+}
+
+enum PollUpdate__status_MutationInput {
+  draft
+  published
+}
+
+enum PollUpdate_huddleId_MutationInput {
+  public
+  c52f2155_154d_4425_be36_9807f14f7dc0
+  d4ff07db_512c_4a2a_bf3f_adc5973e67b0
+  a83e0e80_5f78_42a2_8fa7_a61a08734dba
+  b7742841_79b3_4206_ba6e_0a6a0c99969e
+}
+
+input mutationPollUpdate_OptionsInput {
+  text: String!
+  image: String
+  id: String
+}
+
+enum PollUpdate_category_MutationInput {
+  Collectibles
+  Experiences
+  Moments
+  Platform
+}
+
+input mutationPollUpdate_ReactionsInput {
+  emoji: String!
+  count: Float
+  id: String
+}

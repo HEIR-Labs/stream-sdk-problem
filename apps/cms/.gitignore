@@ -1,0 +1,13 @@
+.env
+user
+
+node_modules
+mongo-config
+mongo-data
+
+**/media
+output
+build
+dist
+
+.DS_Store

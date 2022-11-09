@@ -1,0 +1,8 @@
+# Ignore artifacts:
+**/build
+**/coverage
+**/dist
+
+# Lockfiles:
+pnpm-lock.yaml
+apps/nextjs/.next

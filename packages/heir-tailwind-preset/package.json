@@ -1,0 +1,10 @@
+{
+  "name": "heir-tailwind-preset",
+  "version": "0.0.0",
+  "main": "tailwind.config.js",
+  "private": true,
+  "dependencies": {
+    "@gradin/tailwindcss-skeleton-screen": "^1.0.2",
+    "@tailwindcss/aspect-ratio": "^0.4.2"
+  }
+}
